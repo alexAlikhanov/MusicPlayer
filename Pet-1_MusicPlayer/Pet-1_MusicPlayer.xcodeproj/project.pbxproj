@@ -25,6 +25,8 @@
 		1F6EB86E292CDE5900BB68C5 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6EB86D292CDE5900BB68C5 /* Router.swift */; };
 		1F6EB874292CE28500BB68C5 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6EB873292CE28500BB68C5 /* PlayerViewController.swift */; };
 		1F6EB876292CE2B900BB68C5 /* PlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6EB875292CE2B900BB68C5 /* PlayerPresenter.swift */; };
+		1F710365292D0A9D00952475 /* MainPresenterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F710364292D0A9D00952475 /* MainPresenterTest.swift */; };
+		1F710368292D141000952475 /* RouterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F710367292D141000952475 /* RouterTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		1F6EB86D292CDE5900BB68C5 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		1F6EB873292CE28500BB68C5 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		1F6EB875292CE2B900BB68C5 /* PlayerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPresenter.swift; sourceTree = "<group>"; };
+		1F710364292D0A9D00952475 /* MainPresenterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenterTest.swift; sourceTree = "<group>"; };
+		1F710367292D141000952475 /* RouterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,7 +125,7 @@
 				1F673AC2292B9D9B007F8E9A /* SceneDelegate.swift */,
 				1F6EB86D292CDE5900BB68C5 /* Router.swift */,
 				1F673AFE292BA7B6007F8E9A /* AssemblyModuleBuilder.swift */,
-				1F6EB86F292CE20C00BB68C5 /* PlayerModile */,
+				1F6EB86F292CE20C00BB68C5 /* PlayerModule */,
 				1F673AF4292B9E0A007F8E9A /* MainModule */,
 				1F673AFD292BA782007F8E9A /* ServiceLayer */,
 				1F673AC6292B9D9B007F8E9A /* Main.storyboard */,
@@ -137,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				1F673AD7292B9D9F007F8E9A /* Pet_1_MusicPlayerTests.swift */,
+				1F710363292D0A7400952475 /* MainModuleTest */,
+				1F710366292D13F000952475 /* RouterTest */,
 			);
 			path = "Pet-1_MusicPlayerTests";
 			sourceTree = "<group>";
@@ -193,14 +199,14 @@
 			path = ServiceLayer;
 			sourceTree = "<group>";
 		};
-		1F6EB86F292CE20C00BB68C5 /* PlayerModile */ = {
+		1F6EB86F292CE20C00BB68C5 /* PlayerModule */ = {
 			isa = PBXGroup;
 			children = (
 				1F6EB872292CE24400BB68C5 /* Model */,
 				1F6EB871292CE23500BB68C5 /* View */,
 				1F6EB870292CE22B00BB68C5 /* Presenter */,
 			);
-			path = PlayerModile;
+			path = PlayerModule;
 			sourceTree = "<group>";
 		};
 		1F6EB870292CE22B00BB68C5 /* Presenter */ = {
@@ -224,6 +230,22 @@
 			children = (
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		1F710363292D0A7400952475 /* MainModuleTest */ = {
+			isa = PBXGroup;
+			children = (
+				1F710364292D0A9D00952475 /* MainPresenterTest.swift */,
+			);
+			path = MainModuleTest;
+			sourceTree = "<group>";
+		};
+		1F710366292D13F000952475 /* RouterTest */ = {
+			isa = PBXGroup;
+			children = (
+				1F710367292D141000952475 /* RouterTest.swift */,
+			);
+			path = RouterTest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,6 +399,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F673AD8292B9D9F007F8E9A /* Pet_1_MusicPlayerTests.swift in Sources */,
+				1F710368292D141000952475 /* RouterTest.swift in Sources */,
+				1F710365292D0A9D00952475 /* MainPresenterTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
