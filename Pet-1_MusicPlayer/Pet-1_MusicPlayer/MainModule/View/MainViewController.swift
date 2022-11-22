@@ -49,8 +49,8 @@ class MainViewController: UIViewController {
         NSLayoutConstraint.activate([
             playerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            playerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            playerView.heightAnchor.constraint(equalToConstant: 50)
+            playerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            playerView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
     
@@ -95,7 +95,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapGestureAction(sender: UITapGestureRecognizer){
-        print("tap")
+        presenter.tapOnThePlayer()
     }
 }
 

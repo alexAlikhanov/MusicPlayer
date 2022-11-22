@@ -14,7 +14,7 @@ protocol MainViewProtocol: class {
 }
 
 protocol MainViewPresenterProtocol: class {
-    init(view: MainViewProtocol, networkService: NetworkServiceProtocol)
+    init(view: MainViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol)
     var searchResponce: SearchResponse? { get set }
     var favoriteTracks: [Track] { get set }
     var images: [UIImage?] { get set }
@@ -22,19 +22,22 @@ protocol MainViewPresenterProtocol: class {
     func getImageResponce(responce: [Track]?)
     func addTrackInFavorite(track: Track)
     func removeTrackInFavorite(index: Int)
+    func tapOnThePlayer()
 }
 
 class Presenter: MainViewPresenterProtocol {
     
     weak var view: MainViewProtocol?
+    var router: RouterProtocol?
     var networkservice: NetworkServiceProtocol?
     var searchResponce: SearchResponse?
     var favoriteTracks: [Track] = []
     var images: [UIImage?] = []
     
-    required init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
+    required init(view: MainViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol) {
         self.view = view
         self.networkservice = networkService
+        self.router = router
     }
     
     func getSearchResponce(request: String) {
@@ -73,6 +76,10 @@ class Presenter: MainViewPresenterProtocol {
             }
         }
  
+    }
+    
+    func tapOnThePlayer() {
+        router?.presentMusicPlauer()
     }
     
     func addTrackInFavorite(track: Track) {
