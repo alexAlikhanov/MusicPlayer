@@ -6,15 +6,17 @@
 //
 
 import Foundation
+import UIKit
 
 protocol NetworkServiceProtocol{
     func searchTracksBy(request: String, complition: @escaping (Result<SearchResponse?, Error>) -> Void)
+    func getImageBy(urlString: String?, complition: @escaping (Result<UIImage?, Error>) -> Void)
 }
 
 class NetworkService: NetworkServiceProtocol {
     func searchTracksBy(request: String, complition: @escaping (Result<SearchResponse?, Error>) -> Void) {
         
-        let urlString = "https://itunes.apple.com/search?term=\(request)&limit=5"
+        let urlString = "https://itunes.apple.com/search?term=\(request)&limit=35"
         
         guard let url = URL(string: urlString) else { return }
         
@@ -29,6 +31,20 @@ class NetworkService: NetworkServiceProtocol {
             } catch {
                 complition(.failure(error))
             }
+        }.resume()
+    }
+    
+    func getImageBy(urlString: String?, complition: @escaping (Result<UIImage?, Error>) -> Void) {
+        guard let urlString = urlString else { return }
+        guard let url = URL(string: urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                complition(.failure(error))
+                return
+            }
+            let image = UIImage(data: data!)
+            complition(.success(image))
         }.resume()
     }
 }

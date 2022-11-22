@@ -68,11 +68,17 @@ class TrackTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    
+    override func prepareForReuse() {
+        artworkImage.image = nil
+    }
     func create(track: Track?) {
         guard let track = track else { return }
         if let artistName = track.artistName {self.artistName.text = artistName}
         if let trackName = track.trackName {self.trackName.text = trackName}
+    }
+    func addImage(image: UIImage?){
+        guard let image = image else { return }
+        self.artworkImage.image = image
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

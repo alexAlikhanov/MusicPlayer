@@ -13,6 +13,7 @@ class MainViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchTableView: UITableView!
     private var favoriteTableView: UITableView!
+    private var playerView: UIView!
     private var searchText = String()
     private var searchTimer: Timer!
     override func viewDidLoad() {
@@ -20,6 +21,37 @@ class MainViewController: UIViewController {
         view.backgroundColor = .white
         setupSearchBar()
         createFavoriteTableView()
+        createPlayerView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupConstraints()
+    }
+    
+    private func setupConstraints(){
+        searchTableView.translatesAutoresizingMaskIntoConstraints = false
+        favoriteTableView.translatesAutoresizingMaskIntoConstraints = false
+        playerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            searchTableView.topAnchor.constraint(equalTo: searchController.view.safeAreaLayoutGuide.topAnchor),
+            searchTableView.centerXAnchor.constraint(equalTo: searchController.view.safeAreaLayoutGuide.centerXAnchor),
+            searchTableView.bottomAnchor.constraint(equalTo: searchController.view.safeAreaLayoutGuide.bottomAnchor),
+            searchTableView.widthAnchor.constraint(equalToConstant: searchController.view.safeAreaLayoutGuide.layoutFrame.size.width)
+        ])
+        NSLayoutConstraint.activate([
+            favoriteTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            favoriteTableView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            favoriteTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            favoriteTableView.widthAnchor.constraint(equalToConstant: view.safeAreaLayoutGuide.layoutFrame.size.width)
+        ])
+        NSLayoutConstraint.activate([
+            playerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            playerView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            playerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            playerView.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
     
     private func setupSearchBar() {
@@ -53,11 +85,24 @@ class MainViewController: UIViewController {
         favoriteTableView.tag = 0
         view.addSubview(favoriteTableView)
     }
+    
+    private func createPlayerView(){
+        playerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 50))
+        playerView.backgroundColor = .lightGray
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction(sender:)))
+        playerView.addGestureRecognizer(tapGesture)
+        view.addSubview(playerView)
+    }
+    
+    @objc func tapGestureAction(sender: UITapGestureRecognizer){
+        print("tap")
+    }
 }
 
 extension MainViewController: MainViewProtocol{
     func sucsess() {
         searchTableView.reloadData()
+        favoriteTableView.reloadData()
     }
     
     func failure(error: Error) {
@@ -77,8 +122,16 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? TrackTableViewCell else { return UITableViewCell() }
         switch tableView.tag {
-        case 0: cell.create(track: presenter.favoriteTracks[indexPath.row])
-        case 1: cell.create(track: presenter.searchResponce?.results[indexPath.row])
+        case 0:
+            cell.create(track: presenter.favoriteTracks[indexPath.row])
+            if presenter.images.count > indexPath.row {
+                cell.addImage(image: presenter.images[indexPath.row])
+            }
+        case 1:
+            cell.create(track: presenter.searchResponce?.results[indexPath.row])
+            if presenter.images.count > indexPath.row {
+                cell.addImage(image: presenter.images[indexPath.row])
+            }
         default: break
         }
         return cell
@@ -129,6 +182,6 @@ extension MainViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         presenter.searchResponce = nil
         searchTableView.reloadData()
-        favoriteTableView.reloadData()
+        presenter.getImageResponce(responce: presenter.favoriteTracks)
     }
 }

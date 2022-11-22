@@ -22,7 +22,6 @@
 		1F673AFC292BA00F007F8E9A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AFB292BA00F007F8E9A /* NetworkService.swift */; };
 		1F673AFF292BA7B6007F8E9A /* AssemblyModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AFE292BA7B6007F8E9A /* AssemblyModuleBuilder.swift */; };
 		1F673B08292BAC74007F8E9A /* TrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673B06292BAC74007F8E9A /* TrackTableViewCell.swift */; };
-		1F673B09292BAC74007F8E9A /* TrackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1F673B07292BAC74007F8E9A /* TrackTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +61,6 @@
 		1F673AFB292BA00F007F8E9A /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		1F673AFE292BA7B6007F8E9A /* AssemblyModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyModuleBuilder.swift; sourceTree = "<group>"; };
 		1F673B06292BAC74007F8E9A /* TrackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTableViewCell.swift; sourceTree = "<group>"; };
-		1F673B07292BAC74007F8E9A /* TrackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TrackTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,7 +147,6 @@
 			children = (
 				1F673AF7292B9ECC007F8E9A /* MainViewController.swift */,
 				1F673B06292BAC74007F8E9A /* TrackTableViewCell.swift */,
-				1F673B07292BAC74007F8E9A /* TrackTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -295,7 +292,6 @@
 				1F673ACD292B9D9F007F8E9A /* LaunchScreen.storyboard in Resources */,
 				1F673ACA292B9D9F007F8E9A /* Assets.xcassets in Resources */,
 				1F673AC8292B9D9B007F8E9A /* Main.storyboard in Resources */,
-				1F673B09292BAC74007F8E9A /* TrackTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +431,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -490,7 +486,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -515,6 +511,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -543,6 +540,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
