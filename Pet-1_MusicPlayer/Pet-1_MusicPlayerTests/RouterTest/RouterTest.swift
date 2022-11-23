@@ -33,7 +33,11 @@ class RouterTest: XCTestCase {
     }
 
     func testRouter(){
-        router.presentMusicPlauer()
+        let track = Track(artistName: "Foo", trackName: "foo", collectionName: "Baz", previewUrl: "Bar", artworkUrl100: "url", trackTimeMillis: 0)
+        let tracks: [Track] = [track]
+        let images = [UIImage()]
+        var musicData = MusicData(tracks: tracks, images: images)
+        router.presentMusicPlauer(data: musicData)
         let playerVC = navigationController.presentedVC
         XCTAssertTrue(playerVC is PlayerViewController)
     }

@@ -17,6 +17,27 @@ class MockView: MainViewProtocol {
     }
 }
 
+class MockCompactPlayer: CompactPlayerViewProtocol {
+    var isShow: Bool
+    
+    init(isShow: Bool){
+        self.isShow = isShow
+    }
+    
+    func showPlayerView() {
+        
+    }
+    
+    func hidePlayerView() {
+        
+    }
+    
+    func setupValues(index: Int) {
+        
+    }
+    
+    
+}
 class MockNetworkService: NetworkServiceProtocol {
     
     var request: SearchResponse!
@@ -49,6 +70,9 @@ class MockNetworkService: NetworkServiceProtocol {
     }
 }
 
+class MockUserDefaults: UserDefaultsManager {
+    
+}
 
 class MainPresenterTest: XCTestCase {
 
@@ -57,7 +81,8 @@ class MainPresenterTest: XCTestCase {
     var networkServise: NetworkServiceProtocol!
     var router: RouterProtocol!
     var searchResponce: SearchResponse!
-    
+    var compactPlayer: MockCompactPlayer!
+    var userDefaults: MockUserDefaults!
     
     override func setUpWithError() throws {
         let nav = UINavigationController()
@@ -80,8 +105,10 @@ class MainPresenterTest: XCTestCase {
         self.searchResponce = searchResponce
         
         view = MockView()
+        userDefaults = MockUserDefaults()
+        compactPlayer = MockCompactPlayer(isShow: true)
         networkServise = MockNetworkService(request: searchResponce, image: UIImage())
-        presenter = Presenter(view: view, router: router, networkService: networkServise)
+        presenter = Presenter(view: view, compactPlayer: compactPlayer, router: router, networkService: networkServise, userDefaultsManager: userDefaults)
         
         
         var catchResponce: SearchResponse?
@@ -118,8 +145,10 @@ class MainPresenterTest: XCTestCase {
         self.searchResponce = searchResponce
         
         view = MockView()
+        userDefaults = MockUserDefaults()
+        compactPlayer = MockCompactPlayer(isShow: true)
         networkServise = MockNetworkService()
-        presenter = Presenter(view: view, router: router, networkService: networkServise)
+        presenter = Presenter(view: view, compactPlayer: compactPlayer, router: router, networkService: networkServise, userDefaultsManager: userDefaults)
         
         
         var catchError1: Error?

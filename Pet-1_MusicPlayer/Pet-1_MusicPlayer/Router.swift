@@ -18,7 +18,7 @@ protocol RouterMain{
 protocol RouterProtocol: RouterMain {
     init(navigationController: UINavigationController, assemblyBuilder: AssemblyModuleBuilderProtocol)
     func initialViewController()
-    func presentMusicPlauer()
+    func presentMusicPlauer(data: MusicData?)
     func dismissMusicPlayer()
     func popToRoot()
 }
@@ -40,17 +40,17 @@ class Router: RouterProtocol {
         }
     }
     
-    func presentMusicPlauer() {
+    func presentMusicPlauer(data: MusicData?) {
         if let navigationController = navigationController {
-            guard let ViewController = assemblyBuilder?.createPlayerModule(router: self) else { return }
+            guard let ViewController = assemblyBuilder?.createPlayerModule(router: self, data: data) else { return }
             
-            ViewController.modalPresentationStyle = .overCurrentContext
-            navigationController.present(ViewController, animated: false)
+            ViewController.modalPresentationStyle = .currentContext
+            navigationController.present(ViewController, animated: true)
         }
     }
     func dismissMusicPlayer() {
         if let navigationController = navigationController {
-            navigationController.dismiss(animated: false, completion: nil)
+            navigationController.dismiss(animated: true, completion: nil)
         }
     }
     func popToRoot() {

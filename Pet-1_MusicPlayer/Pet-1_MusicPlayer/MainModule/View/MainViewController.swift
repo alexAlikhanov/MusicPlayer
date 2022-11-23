@@ -13,7 +13,6 @@ class MainViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchTableView: UITableView!
     private var favoriteTableView: UITableView!
-    private var playerView: UIView!
     private var searchText = String()
     private var searchTimer: Timer!
     override func viewDidLoad() {
@@ -21,7 +20,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .white
         setupSearchBar()
         createFavoriteTableView()
-        createPlayerView()
+        presenter.mainViewLoaded()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -32,7 +31,6 @@ class MainViewController: UIViewController {
     private func setupConstraints(){
         searchTableView.translatesAutoresizingMaskIntoConstraints = false
         favoriteTableView.translatesAutoresizingMaskIntoConstraints = false
-        playerView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             searchTableView.topAnchor.constraint(equalTo: searchController.view.safeAreaLayoutGuide.topAnchor),
@@ -45,12 +43,6 @@ class MainViewController: UIViewController {
             favoriteTableView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             favoriteTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             favoriteTableView.widthAnchor.constraint(equalToConstant: view.safeAreaLayoutGuide.layoutFrame.size.width)
-        ])
-        NSLayoutConstraint.activate([
-            playerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            playerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            playerView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
     
@@ -84,18 +76,6 @@ class MainViewController: UIViewController {
         favoriteTableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         favoriteTableView.tag = 0
         view.addSubview(favoriteTableView)
-    }
-    
-    private func createPlayerView(){
-        playerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 50))
-        playerView.backgroundColor = .lightGray
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction(sender:)))
-        playerView.addGestureRecognizer(tapGesture)
-        view.addSubview(playerView)
-    }
-    
-    @objc func tapGestureAction(sender: UITapGestureRecognizer){
-        presenter.tapOnThePlayer()
     }
 }
 
@@ -139,7 +119,10 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView.tag {
-        case 0:  print("tag 0")
+        case 0:
+            if !presenter.isCompactPlayerShow!{presenter.showCompactPlayer()}
+            presenter.setupCompactPlayer(trackIndex: indexPath.row)
+            presenter.currentIndex = indexPath.row
         case 1:
             guard let track = presenter.searchResponce?.results[indexPath.row] else { return }
             presenter.addTrackInFavorite(track: track)

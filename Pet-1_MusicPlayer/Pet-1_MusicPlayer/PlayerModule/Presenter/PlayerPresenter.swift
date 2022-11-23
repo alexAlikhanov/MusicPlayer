@@ -8,11 +8,12 @@
 import Foundation
 
 protocol PlayerViewProtocol: class{
-    
+    func setTrack(data: MusicData?)
 }
 
 protocol PlayerViewPresenterProtocol: class{
-    init (view: PlayerViewProtocol, router: RouterProtocol)
+    init (view: PlayerViewProtocol, router: RouterProtocol, data: MusicData?)
+    func setTrack()
     func back()
 }
 
@@ -20,10 +21,16 @@ protocol PlayerViewPresenterProtocol: class{
 class PlayerPresenter: PlayerViewPresenterProtocol {
     weak var view: PlayerViewProtocol?
     var router: RouterProtocol?
+    var data: MusicData?
     
-    required init(view: PlayerViewProtocol, router: RouterProtocol) {
+    required init(view: PlayerViewProtocol, router: RouterProtocol, data: MusicData?) {
         self.view = view
         self.router = router
+        self.data = data
+    }
+    
+    func setTrack() {
+        self.view?.setTrack(data: data)
     }
     
     func back() {

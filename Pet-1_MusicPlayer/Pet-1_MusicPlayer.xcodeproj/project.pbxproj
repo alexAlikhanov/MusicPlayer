@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F329597292E217B008B6961 /* CompactPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329596292E217B008B6961 /* CompactPlayerView.swift */; };
+		1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329598292E6348008B6961 /* UserDefaultsManager.swift */; };
+		1F32959B292E73F0008B6961 /* MusicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F32959A292E73F0008B6961 /* MusicData.swift */; };
 		1F673AC1292B9D9B007F8E9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AC0292B9D9B007F8E9A /* AppDelegate.swift */; };
 		1F673AC3292B9D9B007F8E9A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AC2292B9D9B007F8E9A /* SceneDelegate.swift */; };
 		1F673AC5292B9D9B007F8E9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AC4292B9D9B007F8E9A /* ViewController.swift */; };
@@ -47,6 +50,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F329596292E217B008B6961 /* CompactPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPlayerView.swift; sourceTree = "<group>"; };
+		1F329598292E6348008B6961 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		1F32959A292E73F0008B6961 /* MusicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicData.swift; sourceTree = "<group>"; };
 		1F673ABD292B9D9B007F8E9A /* Pet-1_MusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pet-1_MusicPlayer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F673AC0292B9D9B007F8E9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F673AC2292B9D9B007F8E9A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -160,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				1F673AF7292B9ECC007F8E9A /* MainViewController.swift */,
+				1F329596292E217B008B6961 /* CompactPlayerView.swift */,
 				1F673B06292BAC74007F8E9A /* TrackTableViewCell.swift */,
 			);
 			path = View;
@@ -195,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				1F673AFB292BA00F007F8E9A /* NetworkService.swift */,
+				1F329598292E6348008B6961 /* UserDefaultsManager.swift */,
 			);
 			path = ServiceLayer;
 			sourceTree = "<group>";
@@ -228,6 +236,7 @@
 		1F6EB872292CE24400BB68C5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1F32959A292E73F0008B6961 /* MusicData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -379,6 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F32959B292E73F0008B6961 /* MusicData.swift in Sources */,
 				1F673AC5292B9D9B007F8E9A /* ViewController.swift in Sources */,
 				1F673AC1292B9D9B007F8E9A /* AppDelegate.swift in Sources */,
 				1F6EB86E292CDE5900BB68C5 /* Router.swift in Sources */,
@@ -386,8 +396,10 @@
 				1F673AFF292BA7B6007F8E9A /* AssemblyModuleBuilder.swift in Sources */,
 				1F673B08292BAC74007F8E9A /* TrackTableViewCell.swift in Sources */,
 				1F6EB876292CE2B900BB68C5 /* PlayerPresenter.swift in Sources */,
+				1F329597292E217B008B6961 /* CompactPlayerView.swift in Sources */,
 				1F673AC3292B9D9B007F8E9A /* SceneDelegate.swift in Sources */,
 				1F673AFA292B9F84007F8E9A /* SearchResponce.swift in Sources */,
+				1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */,
 				1F673AF8292B9ECC007F8E9A /* MainViewController.swift in Sources */,
 				1F6EB874292CE28500BB68C5 /* PlayerViewController.swift in Sources */,
 				1F673AFC292BA00F007F8E9A /* NetworkService.swift in Sources */,
