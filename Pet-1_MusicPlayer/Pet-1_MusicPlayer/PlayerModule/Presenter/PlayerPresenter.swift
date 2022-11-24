@@ -13,8 +13,10 @@ protocol PlayerViewProtocol: class{
 
 protocol PlayerViewPresenterProtocol: class{
     init (view: PlayerViewProtocol, router: RouterProtocol, data: MusicData?)
+    var data: MusicData? { get set }
     func setTrack()
     func back()
+    
 }
 
 

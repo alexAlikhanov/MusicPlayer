@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F086F6A292F7ACD007F2330 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F086F68292F7ACD007F2330 /* CollectionViewCell.swift */; };
+		1F086F6B292F7ACD007F2330 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1F086F69292F7ACD007F2330 /* CollectionViewCell.xib */; };
 		1F329597292E217B008B6961 /* CompactPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329596292E217B008B6961 /* CompactPlayerView.swift */; };
 		1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329598292E6348008B6961 /* UserDefaultsManager.swift */; };
 		1F32959B292E73F0008B6961 /* MusicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F32959A292E73F0008B6961 /* MusicData.swift */; };
@@ -50,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F086F68292F7ACD007F2330 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		1F086F69292F7ACD007F2330 /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
 		1F329596292E217B008B6961 /* CompactPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPlayerView.swift; sourceTree = "<group>"; };
 		1F329598292E6348008B6961 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		1F32959A292E73F0008B6961 /* MusicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicData.swift; sourceTree = "<group>"; };
@@ -229,6 +233,8 @@
 			isa = PBXGroup;
 			children = (
 				1F6EB873292CE28500BB68C5 /* PlayerViewController.swift */,
+				1F086F68292F7ACD007F2330 /* CollectionViewCell.swift */,
+				1F086F69292F7ACD007F2330 /* CollectionViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -363,6 +369,7 @@
 			files = (
 				1F673ACD292B9D9F007F8E9A /* LaunchScreen.storyboard in Resources */,
 				1F673ACA292B9D9F007F8E9A /* Assets.xcassets in Resources */,
+				1F086F6B292F7ACD007F2330 /* CollectionViewCell.xib in Resources */,
 				1F673AC8292B9D9B007F8E9A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,6 +405,7 @@
 				1F6EB876292CE2B900BB68C5 /* PlayerPresenter.swift in Sources */,
 				1F329597292E217B008B6961 /* CompactPlayerView.swift in Sources */,
 				1F673AC3292B9D9B007F8E9A /* SceneDelegate.swift in Sources */,
+				1F086F6A292F7ACD007F2330 /* CollectionViewCell.swift in Sources */,
 				1F673AFA292B9F84007F8E9A /* SearchResponce.swift in Sources */,
 				1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */,
 				1F673AF8292B9ECC007F8E9A /* MainViewController.swift in Sources */,

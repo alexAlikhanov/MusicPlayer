@@ -11,4 +11,5 @@ import UIKit
 struct MusicData{
     var tracks: [Track]
     var images: [UIImage?]
+    var correntItem: Int?
 }

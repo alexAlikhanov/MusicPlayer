@@ -122,7 +122,7 @@ class Presenter: MainViewPresenterProtocol {
     }
     
     func tapOnThePlayer() {
-        let data = MusicData(tracks: favoriteTracks, images: images)
+        let data = MusicData(tracks: favoriteTracks, images: images, correntItem: currentIndex)
         router?.presentMusicPlauer(data: data)
     }
     
@@ -133,8 +133,16 @@ class Presenter: MainViewPresenterProtocol {
     }
     func removeTrackInFavorite(index: Int) {
         self.favoriteTracks.remove(at: index)
+        self.images.remove(at: index)
+        if currentIndex == index, currentIndex <= favoriteTracks.count - 1 {
+            self.setupCompactPlayer(trackIndex: currentIndex)
+        }
+        if currentIndex > favoriteTracks.count - 1 {
+            currentIndex = favoriteTracks.count - 1
+            self.setupCompactPlayer(trackIndex: currentIndex)
+        }
+        print(currentIndex)
         userDefaults.save(self.favoriteTracks, forKey: "myTracks")
-        print(self.favoriteTracks.count)
         if self.favoriteTracks.count == 0 {
             hideCompsctPlayer()
         }

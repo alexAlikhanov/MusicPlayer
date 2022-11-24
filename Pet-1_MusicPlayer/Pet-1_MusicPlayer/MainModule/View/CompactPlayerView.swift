@@ -118,6 +118,7 @@ extension CompactPlayerView : CompactPlayerViewProtocol {
     func setupValues(index: Int) {
         trackNameLabel.text = presenter.favoriteTracks[index].trackName
         artistNameLabel.text = presenter.favoriteTracks[index].artistName
+        
     }
     
     var isShow: Bool {
