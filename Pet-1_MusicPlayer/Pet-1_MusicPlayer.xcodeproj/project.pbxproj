@@ -12,6 +12,7 @@
 		1F329597292E217B008B6961 /* CompactPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329596292E217B008B6961 /* CompactPlayerView.swift */; };
 		1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329598292E6348008B6961 /* UserDefaultsManager.swift */; };
 		1F32959B292E73F0008B6961 /* MusicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F32959A292E73F0008B6961 /* MusicData.swift */; };
+		1F56FC652934E86C002394C0 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F56FC642934E86C002394C0 /* AVPlayer.swift */; };
 		1F673AC1292B9D9B007F8E9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AC0292B9D9B007F8E9A /* AppDelegate.swift */; };
 		1F673AC3292B9D9B007F8E9A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AC2292B9D9B007F8E9A /* SceneDelegate.swift */; };
 		1F673AC5292B9D9B007F8E9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F673AC4292B9D9B007F8E9A /* ViewController.swift */; };
@@ -57,6 +58,7 @@
 		1F329596292E217B008B6961 /* CompactPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPlayerView.swift; sourceTree = "<group>"; };
 		1F329598292E6348008B6961 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		1F32959A292E73F0008B6961 /* MusicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicData.swift; sourceTree = "<group>"; };
+		1F56FC642934E86C002394C0 /* AVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayer.swift; sourceTree = "<group>"; };
 		1F673ABD292B9D9B007F8E9A /* Pet-1_MusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pet-1_MusicPlayer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F673AC0292B9D9B007F8E9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F673AC2292B9D9B007F8E9A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +110,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F56FC632934E849002394C0 /* AVPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				1F56FC642934E86C002394C0 /* AVPlayer.swift */,
+			);
+			path = AVPlayer;
+			sourceTree = "<group>";
+		};
 		1F673AB4292B9D9B007F8E9A = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +145,7 @@
 				1F673AC2292B9D9B007F8E9A /* SceneDelegate.swift */,
 				1F6EB86D292CDE5900BB68C5 /* Router.swift */,
 				1F673AFE292BA7B6007F8E9A /* AssemblyModuleBuilder.swift */,
+				1F56FC632934E849002394C0 /* AVPlayer */,
 				1F6EB86F292CE20C00BB68C5 /* PlayerModule */,
 				1F673AF4292B9E0A007F8E9A /* MainModule */,
 				1F673AFD292BA782007F8E9A /* ServiceLayer */,
@@ -409,6 +420,7 @@
 				1F673AFA292B9F84007F8E9A /* SearchResponce.swift in Sources */,
 				1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */,
 				1F673AF8292B9ECC007F8E9A /* MainViewController.swift in Sources */,
+				1F56FC652934E86C002394C0 /* AVPlayer.swift in Sources */,
 				1F6EB874292CE28500BB68C5 /* PlayerViewController.swift in Sources */,
 				1F673AFC292BA00F007F8E9A /* NetworkService.swift in Sources */,
 			);

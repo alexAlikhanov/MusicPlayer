@@ -31,10 +31,17 @@ class PlayerViewController: UIViewController {
     override func viewDidLayoutSubviews() {
            super.viewDidLayoutSubviews()
            view.layoutIfNeeded()
-        configureCollectionViewLayoutItemSize()
+            configureCollectionViewLayoutItemSize()
             if let index = presenter?.data?.correntItem {
             let indexPath = IndexPath(row: index, section: 0)
             layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+                
+            guard let cell = layout.collectionView?.cellForItem(at: indexPath) as? CollectionViewCell else {return}
+            if let bool = presenter?.data?.isPlaying {
+                if bool {
+                    cell.scaleUp()
+                }
+            }
         }
     }
     @objc func onTap(){
@@ -81,9 +88,19 @@ class PlayerViewController: UIViewController {
 }
 
 extension PlayerViewController: PlayerViewProtocol {
+    func action(flag: Bool) {
+        guard let cell = collectionView?.cellForItem(at: IndexPath(row: presenter?.data?.correntItem ?? 0, section: 0)) as? CollectionViewCell else {return}
+        if flag {
+            cell.scaleUp()
+        }else {
+            cell.scaleDown()
+        }
+    }
+    
     func setTrack(data: MusicData?) {
         collectionView?.reloadData()
     }
+    
 }
 
 extension PlayerViewController: UICollectionViewDataSource {
@@ -129,7 +146,15 @@ extension PlayerViewController: UICollectionViewDelegate {
             guard let bcell = collectionView?.cellForItem(at: IndexPath(row: indexOfCellBeforeDragging, section: 0)) as? CollectionViewCell else {return}
             bcell.scaleDown()
             guard let cell = collectionView?.cellForItem(at: IndexPath(row: snapToIndex, section: 0)) as? CollectionViewCell else {return}
-            cell.scaleUp()
+            if let track = presenter?.data?.tracks[snapToIndex]{
+                presenter?.getTrackResponce(responce:track)
+                presenter?.data?.correntItem = snapToIndex
+            }
+            if let bool = presenter?.data?.isPlaying {
+                if bool {
+                    cell.scaleUp()
+                }
+            }
             
         } else {
             // This is a much better way to scroll to a cell:
@@ -137,7 +162,15 @@ extension PlayerViewController: UICollectionViewDelegate {
             layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             let beckIndexPath = IndexPath(row: indexOfCellBeforeDragging, section: 0)
             guard let cell = collectionView?.cellForItem(at:indexPath) as? CollectionViewCell else {return}
-            cell.scaleUp()
+            if let track = presenter?.data?.tracks[indexPath.row]{
+                presenter?.getTrackResponce(responce:track)
+                presenter?.data?.correntItem = indexPath.row
+            }
+            if let bool = presenter?.data?.isPlaying {
+                if bool {
+                    cell.scaleUp()
+                }
+            }
             guard let bcell = collectionView?.cellForItem(at:beckIndexPath) as? CollectionViewCell else {return}
             bcell.scaleDown()
 
@@ -150,10 +183,6 @@ extension PlayerViewController: UICollectionViewDelegate {
     
 }
 
-extension PlayerViewController: UICollectionViewDelegateFlowLayout {
-
-    
-}
 extension PlayerViewController {
     private func calculateSectionInset() -> CGFloat {
         let deviceIsIpad = UIDevice.current.userInterfaceIdiom == .pad

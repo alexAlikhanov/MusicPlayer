@@ -11,6 +11,7 @@ import UIKit
 protocol NetworkServiceProtocol{
     func searchTracksBy(request: String, complition: @escaping (Result<SearchResponse?, Error>) -> Void)
     func getImageBy(urlString: String?, complition: @escaping (Result<UIImage?, Error>) -> Void)
+    func getTrackBy(urlString: String?, complition: @escaping (Result<Data?, Error>) -> Void)
 }
 
 class NetworkService: NetworkServiceProtocol {
@@ -45,6 +46,19 @@ class NetworkService: NetworkServiceProtocol {
             }
             let image = UIImage(data: data!)
             complition(.success(image))
+        }.resume()
+    }
+    
+    func getTrackBy(urlString: String?, complition: @escaping (Result<Data?, Error>) -> Void) {
+        guard let urlString = urlString else { return }
+        guard let url = URL(string: urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                complition(.failure(error))
+                return
+            }
+            complition(.success(data))
         }.resume()
     }
 }

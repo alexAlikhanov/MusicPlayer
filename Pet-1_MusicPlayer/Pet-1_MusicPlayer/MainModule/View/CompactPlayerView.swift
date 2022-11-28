@@ -13,10 +13,18 @@ class CompactPlayerView: UIView {
     var presenter: MainViewPresenterProtocol!
     var isShowed: Bool = false
     var yConstraint: NSLayoutConstraint!
+    private var buttonState: Bool!
     
     private let closeButton: UIButton = {
         var butt = UIButton()
         butt.setImage(UIImage(named: "cancel"), for: .normal)
+        butt.translatesAutoresizingMaskIntoConstraints = false
+        return butt
+    }()
+    
+    private let playPauseButton: UIButton = {
+        var butt = UIButton()
+        butt.setImage(UIImage(named: "play"), for: .normal)
         butt.translatesAutoresizingMaskIntoConstraints = false
         return butt
     }()
@@ -55,8 +63,11 @@ class CompactPlayerView: UIView {
         self.addSubview(artistNameLabel)
         self.addSubview(trackNameLabel)
         self.addSubview(closeButton)
+        self.addSubview(playPauseButton)
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap(gest:))))
         self.closeButton.addTarget(self, action: #selector(tapCencelButton(butt:)), for: .touchUpInside)
+        self.playPauseButton.addTarget(self, action: #selector(playPauseButtonAction(sender:)), for: .touchUpInside)
+        
         UIApplication.shared.keyWindow?.addSubview(self)
         if let  layoutGuide  = UIApplication.shared.keyWindow?.layoutMarginsGuide {
             yConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: layoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
@@ -73,6 +84,11 @@ class CompactPlayerView: UIView {
         closeButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
         closeButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         closeButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        playPauseButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        playPauseButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15).isActive = true
+        playPauseButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        playPauseButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         artistNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         artistNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -15).isActive = true
@@ -103,8 +119,32 @@ class CompactPlayerView: UIView {
     @objc func tap(gest: UITapGestureRecognizer) {
         presenter.tapOnThePlayer()
     }
+    @objc func playPauseButtonAction(sender: UIButton) {
+        if !buttonState {
+            playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            presenter.changePlayerState(state: .pause)
+        } else {
+            playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+            presenter.changePlayerState(state: .play)
+        }
+    }
 }
 extension CompactPlayerView : CompactPlayerViewProtocol {
+    func changeButtonState(state: PlauerState) {
+        switch state {
+        case .play:
+            self.playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+            self.buttonState = false
+        case .pause:
+            self.playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            self.buttonState = true
+        case .stop:
+            self.playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            self.buttonState = false
+        }
+    }
+    
+    
     func hidePlayerView() {
         UIView.animate(withDuration: 0.5, animations: {
             self.yConstraint.constant = 100

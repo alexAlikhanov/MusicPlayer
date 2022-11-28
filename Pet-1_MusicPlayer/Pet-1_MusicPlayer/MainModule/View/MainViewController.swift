@@ -80,6 +80,7 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: MainViewProtocol{
+
     func sucsess() {
         searchTableView.reloadData()
         favoriteTableView.reloadData()

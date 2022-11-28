@@ -18,10 +18,11 @@ protocol CompactPlayerViewProtocol: class {
     func showPlayerView()
     func hidePlayerView()
     func setupValues(index: Int)
+    func changeButtonState(state: PlauerState )
 }
 
 protocol MainViewPresenterProtocol: class {
-    init(view: MainViewProtocol, compactPlayer: CompactPlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, userDefaultsManager: UserDefaultsManagerProtocol)
+    init(view: MainViewProtocol, compactPlayer: CompactPlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, player: AVPlayerProtocol, userDefaultsManager: UserDefaultsManagerProtocol)
     var searchResponce: SearchResponse? { get set }
     var favoriteTracks: [Track] { get set }
     var images: [UIImage?] { get set }
@@ -30,6 +31,7 @@ protocol MainViewPresenterProtocol: class {
     func mainViewLoaded()
     func getSearchResponce(request: String)
     func getImageResponce(responce: [Track]?)
+    func getTrackResponce(responce: Track)
     func addTrackInFavorite(track: Track)
     func removeTrackInFavorite(index: Int)
     func showCompactPlayer()
@@ -37,6 +39,7 @@ protocol MainViewPresenterProtocol: class {
     func setupCompactPlayer(trackIndex: Int)
     func tapOnThePlayer()
     func dismissPlayer()
+    func changePlayerState(state: PlauerState)
 }
 
 class Presenter: MainViewPresenterProtocol {
@@ -45,6 +48,7 @@ class Presenter: MainViewPresenterProtocol {
     var router: RouterProtocol?
     var compactPlayerView: CompactPlayerViewProtocol?
     var networkservice: NetworkServiceProtocol?
+    var player: AVPlayerProtocol?
     var userDefaults: UserDefaultsManagerProtocol!
     var searchResponce: SearchResponse?
     var favoriteTracks: [Track] = []
@@ -56,10 +60,12 @@ class Presenter: MainViewPresenterProtocol {
     }
     var currentIndex: Int!
     
-    required init(view: MainViewProtocol, compactPlayer: CompactPlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, userDefaultsManager: UserDefaultsManagerProtocol) {
+    required init(view: MainViewProtocol, compactPlayer: CompactPlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, player: AVPlayerProtocol, userDefaultsManager: UserDefaultsManagerProtocol) {
         self.view = view
         self.networkservice = networkService
         self.router = router
+        self.player = player
+        self.player?.delegate = self
         self.compactPlayerView = compactPlayer
         self.userDefaults = userDefaultsManager
     }
@@ -106,6 +112,24 @@ class Presenter: MainViewPresenterProtocol {
         }
  
     }
+    
+    func getTrackResponce(responce: Track) {
+        DispatchQueue.global().sync {
+                networkservice?.getTrackBy(urlString: responce.previewUrl, complition: {[weak self] (result) in
+                    guard let self = self else { return }
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let data):
+                            self.player?.setup(data: data, currentItem: self.currentIndex)
+                        case .failure(let error):
+                            print("error load track \(error)")
+                            
+                        }
+                    }
+                })
+        }
+ 
+    }
     func dismissPlayer() {
         router?.dismissMusicPlayer()
     }
@@ -115,14 +139,22 @@ class Presenter: MainViewPresenterProtocol {
     }
     
     func hideCompsctPlayer() {
-        compactPlayerView?.hidePlayerView()
+        guard let compactPlayerView = compactPlayerView else {
+            return
+        }
+        if compactPlayerView.isShow {
+            compactPlayerView.hidePlayerView()
+            self.player?.stop()
+        }
     }
     func setupCompactPlayer(trackIndex: Int) {
         compactPlayerView?.setupValues(index: trackIndex)
+        self.getTrackResponce(responce: favoriteTracks[trackIndex])
+        self.player?.stop()
     }
     
     func tapOnThePlayer() {
-        let data = MusicData(tracks: favoriteTracks, images: images, correntItem: currentIndex)
+        let data = MusicData(tracks: favoriteTracks, images: images, correntItem: currentIndex, isPlaying: player?.isPlaying ?? false)
         router?.presentMusicPlauer(data: data)
     }
     
@@ -134,11 +166,13 @@ class Presenter: MainViewPresenterProtocol {
     func removeTrackInFavorite(index: Int) {
         self.favoriteTracks.remove(at: index)
         self.images.remove(at: index)
-        if currentIndex == index, currentIndex <= favoriteTracks.count - 1 {
+        if favoriteTracks.count == 0 {
+            self.hideCompsctPlayer()
+        } else if currentIndex == index, currentIndex <= favoriteTracks.count - 1 {
             self.setupCompactPlayer(trackIndex: currentIndex)
-        }
-        if currentIndex > favoriteTracks.count - 1 {
+        } else if currentIndex > favoriteTracks.count - 1 {
             currentIndex = favoriteTracks.count - 1
+            player?.currentItem = currentIndex
             self.setupCompactPlayer(trackIndex: currentIndex)
         }
         print(currentIndex)
@@ -147,5 +181,24 @@ class Presenter: MainViewPresenterProtocol {
             hideCompsctPlayer()
         }
     }
+    func changePlayerState(state: PlauerState) {
+        switch state {
+        case .play:
+            player?.play()
+        case .pause:
+            player?.pause()
+        case .stop:
+            player?.stop()
+        }
+    }
     
+}
+
+extension Presenter: AVPlayerDelegate {
+    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlauerState, currentItem: Int?) {
+        compactPlayerView?.changeButtonState(state: playerStateIs)
+        compactPlayerView?.setupValues(index: currentItem ?? 0)
+        self.currentIndex = currentItem
+    }
+
 }
