@@ -48,6 +48,8 @@ class CompactPlayerView: UIView {
         return label
     }()
     
+    public var loadIndicator = LoadIndicator.shared
+    
     override init(frame: CGRect) {
         super .init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -64,6 +66,7 @@ class CompactPlayerView: UIView {
         self.addSubview(trackNameLabel)
         self.addSubview(closeButton)
         self.addSubview(playPauseButton)
+        self.addSubview(loadIndicator)
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap(gest:))))
         self.closeButton.addTarget(self, action: #selector(tapCencelButton(butt:)), for: .touchUpInside)
         self.playPauseButton.addTarget(self, action: #selector(playPauseButtonAction(sender:)), for: .touchUpInside)
@@ -97,6 +100,11 @@ class CompactPlayerView: UIView {
         trackNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         trackNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 15).isActive = true
         trackNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 2/3).isActive = true
+        
+        loadIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        loadIndicator.leftAnchor.constraint(equalTo: closeButton.rightAnchor, constant: 10).isActive = true
+        loadIndicator.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        loadIndicator.widthAnchor.constraint(equalToConstant: 20).isActive = true
 
         
         UIView.animate(withDuration: 0.5, animations: {

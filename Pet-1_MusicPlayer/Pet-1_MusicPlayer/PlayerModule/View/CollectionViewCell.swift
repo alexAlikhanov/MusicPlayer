@@ -42,14 +42,12 @@ class CollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
         imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         hconstraint  = NSLayoutConstraint(item: imageView, attribute: .height, relatedBy: .equal, toItem: contentView, attribute: .height, multiplier: 1, constant: -50)
         wconstraint = NSLayoutConstraint(item: imageView, attribute: .width, relatedBy: .equal, toItem: contentView, attribute: .width, multiplier: 1, constant: -50)
         NSLayoutConstraint.activate([hconstraint, wconstraint])
         contentView.layoutIfNeeded()
-
     }
     
     func create(image: UIImage?){

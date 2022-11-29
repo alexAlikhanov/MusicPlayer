@@ -5,15 +5,10 @@
 //  Created by Алексей on 11/21/22.
 //
 
-import Foundation
 import UIKit
 
-protocol AssemblyModuleBuilderProtocol{
-    func createMainModule(router: RouterProtocol, player: AVPlayerProtocol) -> UIViewController
-    func createPlayerModule(router: RouterProtocol, data: MusicData?, player: AVPlayerProtocol) -> UIViewController
-}
-
 class AssemblyModuleBuilder: AssemblyModuleBuilderProtocol {
+    
     func createMainModule(router: RouterProtocol, player: AVPlayerProtocol) -> UIViewController {
         let view = MainViewController()
         let networkService = NetworkService()

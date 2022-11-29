@@ -7,22 +7,6 @@
 
 import Foundation
 
-protocol PlayerViewProtocol: class{
-    func setTrack(data: MusicData?)
-    func action(flag: Bool)
-}
-
-protocol PlayerViewPresenterProtocol: class{
-    init (view: PlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, data: MusicData?, player: AVPlayerProtocol)
-    var data: MusicData? { get set }
-    var player: AVPlayerProtocol? { get set }
-    func getTrackResponce(responce: Track)
-    func setTrack()
-    func back()
-    
-}
-
-
 class PlayerPresenter: PlayerViewPresenterProtocol {
     weak var view: PlayerViewProtocol?
     var router: RouterProtocol?
@@ -40,20 +24,19 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     
     func getTrackResponce(responce: Track) {
         DispatchQueue.global().sync {
-                networkService?.getTrackBy(urlString: responce.previewUrl, complition: {[weak self] (result) in
-                    guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success(let data):
-                            self.player?.setup(data: data, currentItem: self.data?.correntItem)
-                        case .failure(let error):
-                            print("error load track \(error)")
-                            
-                        }
+            networkService?.getTrackBy(urlString: responce.previewUrl, complition: {[weak self] (result) in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let data):
+                        self.player?.setup(data: data, currentItem: self.data?.correntItem)
+                    case .failure(let error):
+                        print("error load track \(error)")
+                        
                     }
-                })
+                }
+            })
         }
- 
     }
     
     func setTrack() {
@@ -75,6 +58,5 @@ extension PlayerPresenter: AVPlayerDelegate {
         case .stop:
             self.view?.action(flag: false)
         }
-        
     }
 }

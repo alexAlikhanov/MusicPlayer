@@ -8,40 +8,6 @@
 import Foundation
 import UIKit
 
-protocol MainViewProtocol: class {
-    func sucsess()
-    func failure(error: Error)
-}
-
-protocol CompactPlayerViewProtocol: class {
-    var isShow: Bool { get }
-    func showPlayerView()
-    func hidePlayerView()
-    func setupValues(index: Int)
-    func changeButtonState(state: PlauerState )
-}
-
-protocol MainViewPresenterProtocol: class {
-    init(view: MainViewProtocol, compactPlayer: CompactPlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, player: AVPlayerProtocol, userDefaultsManager: UserDefaultsManagerProtocol)
-    var searchResponce: SearchResponse? { get set }
-    var favoriteTracks: [Track] { get set }
-    var images: [UIImage?] { get set }
-    var isCompactPlayerShow: Bool? { get }
-    var currentIndex: Int! { get set }
-    func mainViewLoaded()
-    func getSearchResponce(request: String)
-    func getImageResponce(responce: [Track]?)
-    func getTrackResponce(responce: Track)
-    func addTrackInFavorite(track: Track)
-    func removeTrackInFavorite(index: Int)
-    func showCompactPlayer()
-    func hideCompsctPlayer()
-    func setupCompactPlayer(trackIndex: Int)
-    func tapOnThePlayer()
-    func dismissPlayer()
-    func changePlayerState(state: PlauerState)
-}
-
 class Presenter: MainViewPresenterProtocol {
     
     weak var view: MainViewProtocol?
@@ -53,6 +19,7 @@ class Presenter: MainViewPresenterProtocol {
     var searchResponce: SearchResponse?
     var favoriteTracks: [Track] = []
     var images: [UIImage?] = []
+    var imagesSearch: [UIImage?] = []
     var isCompactPlayerShow: Bool? {
         get {
             return compactPlayerView?.isShow
@@ -83,7 +50,7 @@ class Presenter: MainViewPresenterProtocol {
                 case .success(let responce):
                     self.searchResponce = responce
                     self.view?.sucsess()
-                    self.getImageResponce(responce: self.searchResponce?.results)
+                    self.getSearchImageResponce(responce: self.searchResponce?.results)
                 case .failure(let error):
                     self.view?.failure(error: error)
                 }
@@ -91,6 +58,26 @@ class Presenter: MainViewPresenterProtocol {
         })
     }
     
+    func getSearchImageResponce(responce: [Track]?) {
+        guard let traks = responce else { return }
+        self.imagesSearch.removeAll()
+        DispatchQueue.global().sync {
+            for track in traks {
+                networkservice?.getImageBy(urlString: track.artworkUrl100, complition: { [weak self] (result) in
+                    guard let self = self else { return }
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let image):
+                            self.imagesSearch.append(image)
+                            self.view?.sucsess()
+                        case .failure(let error):
+                            print("image error", error)
+                        }
+                    }
+                })
+            }
+        }
+    }
     func getImageResponce(responce: [Track]?) {
         guard let traks = responce else { return }
         self.images.removeAll()
@@ -110,7 +97,6 @@ class Presenter: MainViewPresenterProtocol {
                 })
             }
         }
- 
     }
     
     func getTrackResponce(responce: Track) {
@@ -121,6 +107,7 @@ class Presenter: MainViewPresenterProtocol {
                         switch result {
                         case .success(let data):
                             self.player?.setup(data: data, currentItem: self.currentIndex)
+                            self.compactPlayerView?.loadIndicator.stopAnimate()
                         case .failure(let error):
                             print("error load track \(error)")
                             
@@ -148,9 +135,11 @@ class Presenter: MainViewPresenterProtocol {
         }
     }
     func setupCompactPlayer(trackIndex: Int) {
+        guard let player = player else { return }
         compactPlayerView?.setupValues(index: trackIndex)
+        player.stop()
+        compactPlayerView?.loadIndicator.startAnimate()
         self.getTrackResponce(responce: favoriteTracks[trackIndex])
-        self.player?.stop()
     }
     
     func tapOnThePlayer() {
@@ -166,20 +155,19 @@ class Presenter: MainViewPresenterProtocol {
     func removeTrackInFavorite(index: Int) {
         self.favoriteTracks.remove(at: index)
         self.images.remove(at: index)
+        
+        
         if favoriteTracks.count == 0 {
+            self.player?.stop()
             self.hideCompsctPlayer()
-        } else if currentIndex == index, currentIndex <= favoriteTracks.count - 1 {
+        } else if favoriteTracks.count > 0, currentIndex == index, currentIndex <= favoriteTracks.count - 1 {
             self.setupCompactPlayer(trackIndex: currentIndex)
         } else if currentIndex > favoriteTracks.count - 1 {
             currentIndex = favoriteTracks.count - 1
             player?.currentItem = currentIndex
             self.setupCompactPlayer(trackIndex: currentIndex)
         }
-        print(currentIndex)
         userDefaults.save(self.favoriteTracks, forKey: "myTracks")
-        if self.favoriteTracks.count == 0 {
-            hideCompsctPlayer()
-        }
     }
     func changePlayerState(state: PlauerState) {
         switch state {

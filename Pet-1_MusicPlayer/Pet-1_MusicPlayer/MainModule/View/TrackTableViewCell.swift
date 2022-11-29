@@ -25,12 +25,20 @@ class TrackTableViewCell: UITableViewCell {
         return label
     }()
     
+    public var loadIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.color = .yellow
+        return indicator
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super .init(style: style , reuseIdentifier: "Cell")
         backgroundColor = nil
         contentView.addSubview(artistName)
         contentView.addSubview(trackName)
         contentView.addSubview(artworkImage)
+        contentView.addSubview(loadIndicator)
     }
     
     override func layoutSubviews() {
@@ -39,6 +47,7 @@ class TrackTableViewCell: UITableViewCell {
         artistName.translatesAutoresizingMaskIntoConstraints = false
         artworkImage.translatesAutoresizingMaskIntoConstraints = false
         trackName.translatesAutoresizingMaskIntoConstraints = false
+        loadIndicator.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             artworkImage.centerYAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerYAnchor),
@@ -58,6 +67,11 @@ class TrackTableViewCell: UITableViewCell {
             trackName.topAnchor.constraint(equalTo: artistName.bottomAnchor, constant: 10),
             trackName.leftAnchor.constraint(equalTo: artworkImage.rightAnchor, constant: 10),
             trackName.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -5)
+        ])
+        
+        NSLayoutConstraint.activate([
+            loadIndicator.centerXAnchor.constraint(equalTo: artworkImage.centerXAnchor),
+            loadIndicator.centerYAnchor.constraint(equalTo: artworkImage.centerYAnchor)
         ])
     }
     required init?(coder: NSCoder) {

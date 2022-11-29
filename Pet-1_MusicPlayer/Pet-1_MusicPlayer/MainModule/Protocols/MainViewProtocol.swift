@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+protocol MainViewProtocol: class {
+    func sucsess()
+    func failure(error: Error)
+    func changeIndicator(index: Int, state: Bool )
+}

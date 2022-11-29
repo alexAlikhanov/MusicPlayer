@@ -4,5 +4,9 @@
 //
 //  Created by Алексей on 11/29/22.
 //
+import UIKit
 
-import Foundation
+protocol AssemblyModuleBuilderProtocol{
+    func createMainModule(router: RouterProtocol, player: AVPlayerProtocol) -> UIViewController
+    func createPlayerModule(router: RouterProtocol, data: MusicData?, player: AVPlayerProtocol) -> UIViewController
+}

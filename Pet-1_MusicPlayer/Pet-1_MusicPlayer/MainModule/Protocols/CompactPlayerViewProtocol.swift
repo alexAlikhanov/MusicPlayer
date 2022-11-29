@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+protocol CompactPlayerViewProtocol: class {
+    var isShow: Bool { get }
+    var loadIndicator: LoadIndicator { get set }
+    func showPlayerView()
+    func hidePlayerView()
+    func setupValues(index: Int)
+    func changeButtonState(state: PlauerState )
+}

@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+protocol PlayerViewPresenterProtocol: class{
+    init (view: PlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, data: MusicData?, player: AVPlayerProtocol)
+    var data: MusicData? { get set }
+    var player: AVPlayerProtocol? { get set }
+    func getTrackResponce(responce: Track)
+    func setTrack()
+    func back()
+}
