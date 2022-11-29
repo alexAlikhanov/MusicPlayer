@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		1F086F6A292F7ACD007F2330 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F086F68292F7ACD007F2330 /* CollectionViewCell.swift */; };
 		1F086F6B292F7ACD007F2330 /* CollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1F086F69292F7ACD007F2330 /* CollectionViewCell.xib */; };
+		1F2132E32936316C004F88AB /* RouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132E22936316C004F88AB /* RouterProtocol.swift */; };
+		1F2132E6293631E4004F88AB /* AssemblyModuleBuilderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132E5293631E4004F88AB /* AssemblyModuleBuilderProtocol.swift */; };
+		1F2132E92936327E004F88AB /* PlayerViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132E82936327E004F88AB /* PlayerViewProtocol.swift */; };
+		1F2132EB293632A1004F88AB /* PlayerViewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132EA293632A1004F88AB /* PlayerViewPresenterProtocol.swift */; };
+		1F2132EF293636E0004F88AB /* MainVC + extantion TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132EE293636E0004F88AB /* MainVC + extantion TableView.swift */; };
+		1F2132F22936375F004F88AB /* MainViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132F12936375F004F88AB /* MainViewProtocol.swift */; };
+		1F2132F429363781004F88AB /* CompactPlayerViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132F329363781004F88AB /* CompactPlayerViewProtocol.swift */; };
+		1F2132F6293637B6004F88AB /* MainViewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132F5293637B6004F88AB /* MainViewPresenterProtocol.swift */; };
+		1F2132FC2936582B004F88AB /* LoadIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2132FB2936582B004F88AB /* LoadIndicator.swift */; };
 		1F329597292E217B008B6961 /* CompactPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329596292E217B008B6961 /* CompactPlayerView.swift */; };
 		1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F329598292E6348008B6961 /* UserDefaultsManager.swift */; };
 		1F32959B292E73F0008B6961 /* MusicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F32959A292E73F0008B6961 /* MusicData.swift */; };
@@ -55,6 +64,15 @@
 /* Begin PBXFileReference section */
 		1F086F68292F7ACD007F2330 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		1F086F69292F7ACD007F2330 /* CollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewCell.xib; sourceTree = "<group>"; };
+		1F2132E22936316C004F88AB /* RouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterProtocol.swift; sourceTree = "<group>"; };
+		1F2132E5293631E4004F88AB /* AssemblyModuleBuilderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyModuleBuilderProtocol.swift; sourceTree = "<group>"; };
+		1F2132E82936327E004F88AB /* PlayerViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewProtocol.swift; sourceTree = "<group>"; };
+		1F2132EA293632A1004F88AB /* PlayerViewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewPresenterProtocol.swift; sourceTree = "<group>"; };
+		1F2132EE293636E0004F88AB /* MainVC + extantion TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainVC + extantion TableView.swift"; sourceTree = "<group>"; };
+		1F2132F12936375F004F88AB /* MainViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewProtocol.swift; sourceTree = "<group>"; };
+		1F2132F329363781004F88AB /* CompactPlayerViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPlayerViewProtocol.swift; sourceTree = "<group>"; };
+		1F2132F5293637B6004F88AB /* MainViewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewPresenterProtocol.swift; sourceTree = "<group>"; };
+		1F2132FB2936582B004F88AB /* LoadIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadIndicator.swift; sourceTree = "<group>"; };
 		1F329596292E217B008B6961 /* CompactPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactPlayerView.swift; sourceTree = "<group>"; };
 		1F329598292E6348008B6961 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		1F32959A292E73F0008B6961 /* MusicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicData.swift; sourceTree = "<group>"; };
@@ -110,6 +128,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F2132E12936314E004F88AB /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				1F2132E22936316C004F88AB /* RouterProtocol.swift */,
+				1F6EB86D292CDE5900BB68C5 /* Router.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		1F2132E4293631B2004F88AB /* AssemblyModuleBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				1F2132E5293631E4004F88AB /* AssemblyModuleBuilderProtocol.swift */,
+				1F673AFE292BA7B6007F8E9A /* AssemblyModuleBuilder.swift */,
+			);
+			path = AssemblyModuleBuilder;
+			sourceTree = "<group>";
+		};
+		1F2132E72936324D004F88AB /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				1F2132E82936327E004F88AB /* PlayerViewProtocol.swift */,
+				1F2132EA293632A1004F88AB /* PlayerViewPresenterProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		1F2132F029363748004F88AB /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				1F2132F12936375F004F88AB /* MainViewProtocol.swift */,
+				1F2132F329363781004F88AB /* CompactPlayerViewProtocol.swift */,
+				1F2132F5293637B6004F88AB /* MainViewPresenterProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		1F56FC632934E849002394C0 /* AVPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,8 +198,8 @@
 			children = (
 				1F673AC0292B9D9B007F8E9A /* AppDelegate.swift */,
 				1F673AC2292B9D9B007F8E9A /* SceneDelegate.swift */,
-				1F6EB86D292CDE5900BB68C5 /* Router.swift */,
-				1F673AFE292BA7B6007F8E9A /* AssemblyModuleBuilder.swift */,
+				1F2132E4293631B2004F88AB /* AssemblyModuleBuilder */,
+				1F2132E12936314E004F88AB /* Router */,
 				1F56FC632934E849002394C0 /* AVPlayer */,
 				1F6EB86F292CE20C00BB68C5 /* PlayerModule */,
 				1F673AF4292B9E0A007F8E9A /* MainModule */,
@@ -181,7 +236,9 @@
 			isa = PBXGroup;
 			children = (
 				1F673AF7292B9ECC007F8E9A /* MainViewController.swift */,
+				1F2132EE293636E0004F88AB /* MainVC + extantion TableView.swift */,
 				1F329596292E217B008B6961 /* CompactPlayerView.swift */,
+				1F2132FB2936582B004F88AB /* LoadIndicator.swift */,
 				1F673B06292BAC74007F8E9A /* TrackTableViewCell.swift */,
 			);
 			path = View;
@@ -206,6 +263,7 @@
 		1F673AF4292B9E0A007F8E9A /* MainModule */ = {
 			isa = PBXGroup;
 			children = (
+				1F2132F029363748004F88AB /* Protocols */,
 				1F673AF3292B9DEE007F8E9A /* Model */,
 				1F673AF0292B9DC4007F8E9A /* View */,
 				1F673AF2292B9DDF007F8E9A /* Presenter */,
@@ -225,6 +283,7 @@
 		1F6EB86F292CE20C00BB68C5 /* PlayerModule */ = {
 			isa = PBXGroup;
 			children = (
+				1F2132E72936324D004F88AB /* Protocols */,
 				1F6EB872292CE24400BB68C5 /* Model */,
 				1F6EB871292CE23500BB68C5 /* View */,
 				1F6EB870292CE22B00BB68C5 /* Presenter */,
@@ -406,22 +465,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F2132E32936316C004F88AB /* RouterProtocol.swift in Sources */,
 				1F32959B292E73F0008B6961 /* MusicData.swift in Sources */,
 				1F673AC5292B9D9B007F8E9A /* ViewController.swift in Sources */,
 				1F673AC1292B9D9B007F8E9A /* AppDelegate.swift in Sources */,
 				1F6EB86E292CDE5900BB68C5 /* Router.swift in Sources */,
+				1F2132EB293632A1004F88AB /* PlayerViewPresenterProtocol.swift in Sources */,
 				1F673AF6292B9E21007F8E9A /* Presenter.swift in Sources */,
 				1F673AFF292BA7B6007F8E9A /* AssemblyModuleBuilder.swift in Sources */,
 				1F673B08292BAC74007F8E9A /* TrackTableViewCell.swift in Sources */,
 				1F6EB876292CE2B900BB68C5 /* PlayerPresenter.swift in Sources */,
 				1F329597292E217B008B6961 /* CompactPlayerView.swift in Sources */,
+				1F2132F429363781004F88AB /* CompactPlayerViewProtocol.swift in Sources */,
+				1F2132EF293636E0004F88AB /* MainVC + extantion TableView.swift in Sources */,
+				1F2132F6293637B6004F88AB /* MainViewPresenterProtocol.swift in Sources */,
+				1F2132E6293631E4004F88AB /* AssemblyModuleBuilderProtocol.swift in Sources */,
 				1F673AC3292B9D9B007F8E9A /* SceneDelegate.swift in Sources */,
 				1F086F6A292F7ACD007F2330 /* CollectionViewCell.swift in Sources */,
+				1F2132E92936327E004F88AB /* PlayerViewProtocol.swift in Sources */,
 				1F673AFA292B9F84007F8E9A /* SearchResponce.swift in Sources */,
+				1F2132FC2936582B004F88AB /* LoadIndicator.swift in Sources */,
 				1F329599292E6348008B6961 /* UserDefaultsManager.swift in Sources */,
 				1F673AF8292B9ECC007F8E9A /* MainViewController.swift in Sources */,
 				1F56FC652934E86C002394C0 /* AVPlayer.swift in Sources */,
 				1F6EB874292CE28500BB68C5 /* PlayerViewController.swift in Sources */,
+				1F2132F22936375F004F88AB /* MainViewProtocol.swift in Sources */,
 				1F673AFC292BA00F007F8E9A /* NetworkService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
