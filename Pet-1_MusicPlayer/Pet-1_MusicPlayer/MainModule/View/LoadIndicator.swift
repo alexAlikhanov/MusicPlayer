@@ -50,7 +50,9 @@ class LoadIndicator: UIView {
     }
     func stopAnimate(){
         ImageView.isHidden = true
-        timer.invalidate()
+        if timer != nil {
+            timer.invalidate()
+        }
         timer = nil
     }
     @objc func animateView() {

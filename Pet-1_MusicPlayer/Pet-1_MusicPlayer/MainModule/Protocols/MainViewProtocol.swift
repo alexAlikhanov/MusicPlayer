@@ -11,4 +11,5 @@ protocol MainViewProtocol: class {
     func sucsess()
     func failure(error: Error)
     func changeIndicator(index: Int, state: Bool )
+    func setupPlayingTrackLineInTable(index: Int)
 }

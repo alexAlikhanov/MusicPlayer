@@ -13,23 +13,25 @@ class Router: RouterProtocol {
     var navigationController: UINavigationController?
     var assemblyBuilder: AssemblyModuleBuilderProtocol?
     var player: AVPlayerProtocol!
+    var networkService: NetworkServiceProtocol!
     
-    required init(navigationController: UINavigationController, assemblyBuilder: AssemblyModuleBuilderProtocol, player: AVPlayerProtocol){
+    required init(navigationController: UINavigationController, assemblyBuilder: AssemblyModuleBuilderProtocol, networkService: NetworkServiceProtocol, player: AVPlayerProtocol){
         self.navigationController = navigationController
         self.assemblyBuilder = assemblyBuilder
+        self.networkService = networkService
         self.player = player
     }
     
     func initialViewController() {
         if let navigationController = navigationController {
-            guard let mainViewController = assemblyBuilder?.createMainModule(router: self, player: self.player) else { return }
+            guard let mainViewController = assemblyBuilder?.createMainModule(router: self, networkService: self.networkService, player: self.player) else { return }
             navigationController.viewControllers = [mainViewController]
         }
     }
     
     func presentMusicPlauer(data: MusicData?) {
         if let navigationController = navigationController {
-            guard let ViewController = assemblyBuilder?.createPlayerModule(router: self, data: data, player: self.player) else { return }
+            guard let ViewController = assemblyBuilder?.createPlayerModule(router: self, data: data, networkService: self.networkService, player: self.player) else { return }
             
             ViewController.modalPresentationStyle = .currentContext
             navigationController.present(ViewController, animated: true)

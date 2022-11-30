@@ -13,5 +13,5 @@ protocol CompactPlayerViewProtocol: class {
     func showPlayerView()
     func hidePlayerView()
     func setupValues(index: Int)
-    func changeButtonState(state: PlauerState )
+    func changeButtonState(state: PlayerState )
 }

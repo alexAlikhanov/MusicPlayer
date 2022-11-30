@@ -7,6 +7,6 @@
 import UIKit
 
 protocol AssemblyModuleBuilderProtocol{
-    func createMainModule(router: RouterProtocol, player: AVPlayerProtocol) -> UIViewController
-    func createPlayerModule(router: RouterProtocol, data: MusicData?, player: AVPlayerProtocol) -> UIViewController
+    func createMainModule(router: RouterProtocol, networkService: NetworkServiceProtocol, player: AVPlayerProtocol) -> UIViewController
+    func createPlayerModule(router: RouterProtocol, data: MusicData?, networkService: NetworkServiceProtocol, player: AVPlayerProtocol) -> UIViewController
 }

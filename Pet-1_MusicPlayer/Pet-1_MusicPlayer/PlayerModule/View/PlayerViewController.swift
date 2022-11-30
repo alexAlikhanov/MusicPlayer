@@ -70,11 +70,16 @@ class PlayerViewController: UIViewController {
         collectionView?.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         collectionView?.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
         collectionView?.heightAnchor.constraint(equalToConstant: 300).isActive = true
-        collectionView?.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100).isActive = true
+        collectionView?.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.bounds.height/10).isActive = true
     }
 }
 
 extension PlayerViewController: PlayerViewProtocol {
+    func setupPlayingTrackLineInCollecrion(index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
     func action(flag: Bool) {
         guard let cell = collectionView?.cellForItem(at: IndexPath(row: presenter?.data?.correntItem ?? 0, section: 0)) as? CollectionViewCell else {return}
         if flag {

@@ -138,7 +138,7 @@ class CompactPlayerView: UIView {
     }
 }
 extension CompactPlayerView : CompactPlayerViewProtocol {
-    func changeButtonState(state: PlauerState) {
+    func changeButtonState(state: PlayerState) {
         switch state {
         case .play:
             self.playPauseButton.setImage(UIImage(named: "pause"), for: .normal)

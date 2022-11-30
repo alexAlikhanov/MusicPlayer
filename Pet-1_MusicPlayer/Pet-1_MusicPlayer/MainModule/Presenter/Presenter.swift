@@ -35,6 +35,7 @@ class Presenter: MainViewPresenterProtocol {
         self.player?.delegate = self
         self.compactPlayerView = compactPlayer
         self.userDefaults = userDefaultsManager
+        self.currentIndex = 0
     }
     func mainViewLoaded() {
         userDefaults.loadData(forKey: "myTracks") { [weak self] tracks in
@@ -100,22 +101,21 @@ class Presenter: MainViewPresenterProtocol {
     }
     
     func getTrackResponce(responce: Track) {
+       // self.player?.pause()
         DispatchQueue.global().sync {
-                networkservice?.getTrackBy(urlString: responce.previewUrl, complition: {[weak self] (result) in
-                    guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success(let data):
-                            self.player?.setup(data: data, currentItem: self.currentIndex)
-                            self.compactPlayerView?.loadIndicator.stopAnimate()
-                        case .failure(let error):
-                            print("error load track \(error)")
-                            
-                        }
+            networkservice?.getTrackBy(urlString: responce.previewUrl, complition: {[weak self] (result) in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let data):
+                        self.player?.setup(data: data, currentItem: self.currentIndex)
+                    case .failure(let error):
+                        print("error load track \(error)")
+                        
                     }
-                })
+                }
+            })
         }
- 
     }
     func dismissPlayer() {
         router?.dismissMusicPlayer()
@@ -131,13 +131,11 @@ class Presenter: MainViewPresenterProtocol {
         }
         if compactPlayerView.isShow {
             compactPlayerView.hidePlayerView()
-            self.player?.stop()
+            self.player?.pause()
         }
     }
     func setupCompactPlayer(trackIndex: Int) {
-        guard let player = player else { return }
         compactPlayerView?.setupValues(index: trackIndex)
-        player.stop()
         compactPlayerView?.loadIndicator.startAnimate()
         self.getTrackResponce(responce: favoriteTracks[trackIndex])
     }
@@ -158,7 +156,7 @@ class Presenter: MainViewPresenterProtocol {
         
         
         if favoriteTracks.count == 0 {
-            self.player?.stop()
+            self.player?.pause()
             self.hideCompsctPlayer()
         } else if favoriteTracks.count > 0, currentIndex == index, currentIndex <= favoriteTracks.count - 1 {
             self.setupCompactPlayer(trackIndex: currentIndex)
@@ -169,7 +167,7 @@ class Presenter: MainViewPresenterProtocol {
         }
         userDefaults.save(self.favoriteTracks, forKey: "myTracks")
     }
-    func changePlayerState(state: PlauerState) {
+    func changePlayerState(state: PlayerState) {
         switch state {
         case .play:
             player?.play()
@@ -183,10 +181,24 @@ class Presenter: MainViewPresenterProtocol {
 }
 
 extension Presenter: AVPlayerDelegate {
-    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlauerState, currentItem: Int?) {
+    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlayerState, currentItem: Int?) {
+        print(playerStateIs)
         compactPlayerView?.changeButtonState(state: playerStateIs)
-        compactPlayerView?.setupValues(index: currentItem ?? 0)
-        self.currentIndex = currentItem
+        if playerStateIs == .stop {
+            if currentIndex < favoriteTracks.count - 1 {
+                currentIndex = currentIndex + 1
+                setupCompactPlayer(trackIndex: currentIndex)
+                view?.setupPlayingTrackLineInTable(index: currentIndex)
+            }
+            if currentIndex == favoriteTracks.count - 1 {
+                player?.pause()
+            }
+        }
+        if playerStateIs == .play {
+            compactPlayerView?.setupValues(index: currentItem ?? 0)
+            currentIndex = currentItem
+            view?.setupPlayingTrackLineInTable(index: currentIndex)
+            compactPlayerView?.loadIndicator.stopAnimate()
+        }
     }
-
 }

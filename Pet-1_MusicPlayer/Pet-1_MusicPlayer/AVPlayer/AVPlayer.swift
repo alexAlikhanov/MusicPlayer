@@ -8,7 +8,7 @@
 import Foundation
 import AVFAudio
 
-enum PlauerState{
+enum PlayerState{
     case play
     case pause
     case stop
@@ -19,7 +19,7 @@ protocol AVPlayerDataSouce: class {
 }
 
 protocol AVPlayerDelegate: class {
-    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlauerState, currentItem : Int?)
+    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlayerState, currentItem : Int?)
 }
 
 protocol AVPlayerProtocol{

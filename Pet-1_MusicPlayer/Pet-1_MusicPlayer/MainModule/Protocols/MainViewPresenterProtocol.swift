@@ -27,5 +27,5 @@ protocol MainViewPresenterProtocol: class {
     func setupCompactPlayer(trackIndex: Int)
     func tapOnThePlayer()
     func dismissPlayer()
-    func changePlayerState(state: PlauerState)
+    func changePlayerState(state: PlayerState)
 }

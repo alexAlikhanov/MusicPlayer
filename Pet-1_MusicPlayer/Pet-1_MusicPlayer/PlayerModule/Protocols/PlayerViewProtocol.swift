@@ -10,4 +10,5 @@ import Foundation
 protocol PlayerViewProtocol: class{
     func setTrack(data: MusicData?)
     func action(flag: Bool)
+    func setupPlayingTrackLineInCollecrion(index: Int)
 }

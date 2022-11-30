@@ -23,6 +23,7 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     }
     
     func getTrackResponce(responce: Track) {
+        self.player?.pause()
         DispatchQueue.global().sync {
             networkService?.getTrackBy(urlString: responce.previewUrl, complition: {[weak self] (result) in
                 guard let self = self else { return }
@@ -40,7 +41,7 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     }
     
     func setTrack() {
-        self.view?.setTrack(data: data)
+        view?.setTrack(data: data)
     }
     
     func back() {
@@ -49,14 +50,16 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
 }
 
 extension PlayerPresenter: AVPlayerDelegate {
-    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlauerState, currentItem: Int?) {
+    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlayerState, currentItem: Int?) {
         switch playerStateIs {
         case .play:
-            self.view?.action(flag: true)
+            data?.correntItem = currentItem
+            view?.setupPlayingTrackLineInCollecrion(index: currentItem!)
+            view?.action(flag: true)
         case .pause:
-            self.view?.action(flag: false)
+            view?.action(flag: false)
         case .stop:
-            self.view?.action(flag: false)
+            view?.action(flag: false)
         }
     }
 }

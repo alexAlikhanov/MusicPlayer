@@ -18,7 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = UINavigationController()
         let assabblyBuilder = AssemblyModuleBuilder()
         let avPlayer = AVPlayer.shared
-        let router = Router(navigationController: navigationController, assemblyBuilder: assabblyBuilder, player: avPlayer)
+        let networkService = NetworkService()
+        let router = Router(navigationController: navigationController, assemblyBuilder: assabblyBuilder, networkService: networkService, player: avPlayer)
         router.initialViewController()
         window.rootViewController = navigationController
         self.window = window

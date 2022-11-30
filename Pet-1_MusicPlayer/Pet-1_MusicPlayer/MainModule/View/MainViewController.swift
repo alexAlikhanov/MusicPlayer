@@ -80,6 +80,11 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: MainViewProtocol{
+    func setupPlayingTrackLineInTable(index: Int) {
+        let indePath = IndexPath(row: index, section: 0)
+        self.favoriteTableView.selectRow(at: indePath, animated: true, scrollPosition: .none)
+    }
+    
     func changeIndicator(index: Int, state: Bool) {
         let indexPath = IndexPath(row: index, section: 0)
         guard let cell = self.favoriteTableView.cellForRow(at: indexPath) as? TrackTableViewCell else {return}
