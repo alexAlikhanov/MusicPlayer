@@ -17,21 +17,24 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? TrackTableViewCell else { return UITableViewCell() }
         switch tableView.tag {
         case 0:
-            cell.create(track: presenter.favoriteTracks[indexPath.row])
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? TrackTableViewCell else { return UITableViewCell() }
+            cell.create(track: presenter.favoriteTracks[indexPath.row], presenter: self.presenter, index: indexPath.row)
             if presenter.images.count > indexPath.row {
                 cell.addImage(image: presenter.images[indexPath.row])
+                cell.favoriteButton.isHidden = true
             }
+            return cell
         case 1:
-            cell.create(track: presenter.searchResponce?.results[indexPath.row])
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? TrackTableViewCell else { return UITableViewCell() }
+            cell.create(track: presenter.searchResponce?.results[indexPath.row], presenter: self.presenter, index: indexPath.row)
             if presenter.imagesSearch.count > indexPath.row {
                 cell.addImage(image: presenter.imagesSearch[indexPath.row])
             }
-        default: break
+            return cell
+        default: return UITableViewCell()
         }
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -43,7 +46,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             
         case 1:
             guard let track = presenter.searchResponce?.results[indexPath.row] else { return }
-            presenter.addTrackInFavorite(track: track)
+            //presenter.addTrackInFavorite(track: track)
         default: break
         }
     }

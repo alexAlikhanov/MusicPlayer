@@ -19,4 +19,5 @@ struct Track: Codable {
     var previewUrl: String?
     var artworkUrl100: String?
     var trackTimeMillis: Int?
+    var trackId: Int?
 }

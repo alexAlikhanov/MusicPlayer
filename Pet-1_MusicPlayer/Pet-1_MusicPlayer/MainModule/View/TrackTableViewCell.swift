@@ -8,6 +8,7 @@
 import UIKit
 
 class TrackTableViewCell: UITableViewCell {
+    public var presenter: MainViewPresenterProtocol!
     private var artworkImage: UIImageView = {
         var imageView = UIImageView()
         imageView.layer.cornerRadius = 5
@@ -31,6 +32,16 @@ class TrackTableViewCell: UITableViewCell {
         indicator.color = .yellow
         return indicator
     }()
+    public var favoriteButton: UIButton = {
+        var button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = nil
+        button.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+        button.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .highlighted)
+        return button
+    }()
+    
+    private var state = false
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super .init(style: style , reuseIdentifier: "Cell")
@@ -39,6 +50,8 @@ class TrackTableViewCell: UITableViewCell {
         contentView.addSubview(trackName)
         contentView.addSubview(artworkImage)
         contentView.addSubview(loadIndicator)
+        contentView.addSubview(favoriteButton)
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonAction(sender:)), for: .touchUpInside)
     }
     
     override func layoutSubviews() {
@@ -60,18 +73,25 @@ class TrackTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             artistName.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 10),
             artistName.leftAnchor.constraint(equalTo: artworkImage.rightAnchor, constant: 10),
-            artistName.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -5)
+            artistName.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -50)
         ])
         
         NSLayoutConstraint.activate([
             trackName.topAnchor.constraint(equalTo: artistName.bottomAnchor, constant: 10),
             trackName.leftAnchor.constraint(equalTo: artworkImage.rightAnchor, constant: 10),
-            trackName.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -5)
+            trackName.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -50)
         ])
         
         NSLayoutConstraint.activate([
             loadIndicator.centerXAnchor.constraint(equalTo: artworkImage.centerXAnchor),
             loadIndicator.centerYAnchor.constraint(equalTo: artworkImage.centerYAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            favoriteButton.centerYAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerYAnchor),
+            favoriteButton.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -15),
+            favoriteButton.heightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.heightAnchor, multiplier: 1/3),
+            favoriteButton.widthAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.heightAnchor, multiplier: 1/3)
         ])
     }
     required init?(coder: NSCoder) {
@@ -84,15 +104,29 @@ class TrackTableViewCell: UITableViewCell {
     }
     override func prepareForReuse() {
         artworkImage.image = nil
+        favoriteButton.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
     }
-    func create(track: Track?) {
+    func create(track: Track?, presenter: MainViewPresenterProtocol, index: Int) {
         guard let track = track else { return }
         if let artistName = track.artistName {self.artistName.text = artistName}
         if let trackName = track.trackName {self.trackName.text = trackName}
+        self.tag = index
+        self.presenter = presenter
     }
     func addImage(image: UIImage?){
         guard let image = image else { return }
         self.artworkImage.image = image
+    }
+    
+    @objc func favoriteButtonAction(sender: UIButton){
+        state = !state
+        if state {
+            sender.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .normal)
+            guard let track = presenter.searchResponce?.results[self.tag] else { return }
+            presenter.addTrackInFavorite(track: track)
+        } else {
+            sender.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
