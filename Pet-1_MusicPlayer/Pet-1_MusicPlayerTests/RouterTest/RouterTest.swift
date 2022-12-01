@@ -22,10 +22,11 @@ class RouterTest: XCTestCase {
     var router: RouterProtocol!
     var navigationController = MockNavigationController()
     var assembly = AssemblyModuleBuilder()
-    
+    var network = NetworkService()
+    var player = AVPlayer()
     
     override func setUpWithError() throws {
-        router = Router(navigationController: navigationController, assemblyBuilder: assembly)
+        router = Router(navigationController: navigationController, assemblyBuilder: assembly, networkService: network, player: player)
     }
 
     override func tearDownWithError() throws {
@@ -36,7 +37,7 @@ class RouterTest: XCTestCase {
         let track = Track(artistName: "Foo", trackName: "foo", collectionName: "Baz", previewUrl: "Bar", artworkUrl100: "url", trackTimeMillis: 0)
         let tracks: [Track] = [track]
         let images = [UIImage()]
-        var musicData = MusicData(tracks: tracks, images: images)
+        var musicData = MusicData(tracks: tracks, images: images, isPlaying: true)
         router.presentMusicPlauer(data: musicData)
         let playerVC = navigationController.presentedVC
         XCTAssertTrue(playerVC is PlayerViewController)

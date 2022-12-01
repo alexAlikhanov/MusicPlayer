@@ -13,6 +13,9 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     var data: MusicData?
     var player: AVPlayerProtocol?
     var networkService: NetworkServiceProtocol?
+    var currentTrackTime: Float?
+
+    
     required init(view: PlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, data: MusicData?, player: AVPlayerProtocol) {
         self.view = view
         self.router = router
@@ -20,6 +23,7 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
         self.data = data
         self.player = player
         self.player?.delegate2 = self
+        currentTrackTime = 0
     }
     
     func getTrackResponce(responce: Track) {
@@ -47,6 +51,10 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     func back() {
         router?.dismissMusicPlayer()
     }
+    
+    func refrashData(currentTime: Float) {
+        self.player?.setCurrentTime(time: TimeInterval(currentTime))
+    }
 }
 
 extension PlayerPresenter: AVPlayerDelegate {
@@ -62,4 +70,9 @@ extension PlayerPresenter: AVPlayerDelegate {
             view?.action(flag: false)
         }
     }
+    func avPlayer(_ AVPlayer: AVPlayer, currentTime: TimeInterval?, durationTime: TimeInterval?) {
+        guard let time = currentTime, let duration = durationTime else { return }
+        view?.refrashSlider(currentTime: time, duration: duration)
+    }
+ 
 }

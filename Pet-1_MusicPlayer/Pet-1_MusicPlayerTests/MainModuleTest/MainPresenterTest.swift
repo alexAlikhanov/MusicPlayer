@@ -9,6 +9,14 @@ import XCTest
 @testable import Pet_1_MusicPlayer
 
 class MockView: MainViewProtocol {
+    func changeIndicator(index: Int, state: Bool) {
+        
+    }
+    
+    func setupPlayingTrackLineInTable(index: Int) {
+        
+    }
+    
     func sucsess() {
         
     }
@@ -18,10 +26,17 @@ class MockView: MainViewProtocol {
 }
 
 class MockCompactPlayer: CompactPlayerViewProtocol {
+    var loadIndicator: LoadIndicator
+    
+    func changeButtonState(state: PlayerState) {
+        
+    }
+    
     var isShow: Bool
     
     init(isShow: Bool){
         self.isShow = isShow
+        self.loadIndicator = LoadIndicator()
     }
     
     func showPlayerView() {
@@ -39,19 +54,33 @@ class MockCompactPlayer: CompactPlayerViewProtocol {
     
 }
 class MockNetworkService: NetworkServiceProtocol {
-    
-    var request: SearchResponse!
+
+    var request: Data!
+    var searchRequest: SearchResponse!
     var image: UIImage!
     init(){}
     
-    convenience init(request: SearchResponse?, image: UIImage?){
+    convenience init(request: Data?, image: UIImage?){
         self.init()
         self.request = request
         self.image = image
     }
-    
+    convenience init(request: SearchResponse?, image: UIImage?){
+        self.init()
+        self.searchRequest = request
+        self.image = image
+    }
     
     func searchTracksBy(request: String, complition: @escaping (Result<SearchResponse?, Error>) -> Void) {
+        if let request = self.searchRequest {
+            complition(.success(request))
+        }else {
+            let error = NSError(domain: "", code: 0, userInfo: nil)
+            complition(.failure(error))
+        }
+    }
+
+    func getTrackBy(urlString: String?, complition: @escaping (Result<Data?, Error>) -> Void) {
         if let request = self.request {
             complition(.success(request))
         }else {
@@ -79,6 +108,7 @@ class MainPresenterTest: XCTestCase {
     var view: MockView!
     var presenter: Presenter!
     var networkServise: NetworkServiceProtocol!
+    var player : AVPlayerProtocol!
     var router: RouterProtocol!
     var searchResponce: SearchResponse!
     var compactPlayer: MockCompactPlayer!
@@ -87,7 +117,9 @@ class MainPresenterTest: XCTestCase {
     override func setUpWithError() throws {
         let nav = UINavigationController()
         let assembly = AssemblyModuleBuilder()
-        router = Router(navigationController: nav, assemblyBuilder: assembly)
+        let network = NetworkService()
+        let player = AVPlayer()
+        router = Router(navigationController: nav, assemblyBuilder: assembly, networkService: network, player: player)
     }
 
     override func tearDownWithError() throws {
@@ -108,7 +140,8 @@ class MainPresenterTest: XCTestCase {
         userDefaults = MockUserDefaults()
         compactPlayer = MockCompactPlayer(isShow: true)
         networkServise = MockNetworkService(request: searchResponce, image: UIImage())
-        presenter = Presenter(view: view, compactPlayer: compactPlayer, router: router, networkService: networkServise, userDefaultsManager: userDefaults)
+        player = AVPlayer()
+        presenter = Presenter(view: view, compactPlayer: compactPlayer, router: router, networkService: networkServise, player: player, userDefaultsManager: userDefaults)
         
         
         var catchResponce: SearchResponse?
@@ -148,7 +181,9 @@ class MainPresenterTest: XCTestCase {
         userDefaults = MockUserDefaults()
         compactPlayer = MockCompactPlayer(isShow: true)
         networkServise = MockNetworkService()
-        presenter = Presenter(view: view, compactPlayer: compactPlayer, router: router, networkService: networkServise, userDefaultsManager: userDefaults)
+        player = AVPlayer()
+        
+        presenter = Presenter(view: view, compactPlayer: compactPlayer, router: router, networkService: networkServise, player: player, userDefaultsManager: userDefaults)
         
         
         var catchError1: Error?

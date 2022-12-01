@@ -20,6 +20,7 @@ protocol AVPlayerDataSouce: class {
 
 protocol AVPlayerDelegate: class {
     func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlayerState, currentItem : Int?)
+    func avPlayer(_ AVPlayer: AVPlayer, currentTime : TimeInterval?, durationTime: TimeInterval?)
 }
 
 protocol AVPlayerProtocol{
@@ -27,7 +28,10 @@ protocol AVPlayerProtocol{
     var delegate2: AVPlayerDelegate? { get set }
     var currentItem: Int?{ get set }
     var isPlaying: Bool! { get set }
+    var currentTime: TimeInterval! { get set }
+    var trackDuration: TimeInterval! { get set }
     func setup(data: Data?, currentItem: Int?)
+    func setCurrentTime(time: TimeInterval)
     func play()
     func pause()
     func stop()
@@ -39,7 +43,10 @@ class AVPlayer: NSObject, AVPlayerProtocol {
     public weak var delegate2: AVPlayerDelegate?
     public var currentItem: Int?
     public var isPlaying: Bool!
+    public var currentTime: TimeInterval!
+    public var trackDuration: TimeInterval!
     private var player = AVAudioPlayer()
+    private var timer = Timer()
     
     func setup(data: Data?, currentItem: Int?){
         self.currentItem = currentItem
@@ -47,6 +54,7 @@ class AVPlayer: NSObject, AVPlayerProtocol {
         do {
             self.player = try AVAudioPlayer(data: data, fileTypeHint: "m4a")
             self.player.delegate = self
+            self.trackDuration = player.duration
             self.play()
         }
         catch {
@@ -56,20 +64,33 @@ class AVPlayer: NSObject, AVPlayerProtocol {
     func play() {
         player.play()
         isPlaying = true
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] timer in
+            guard let self = self else { return }
+            self.delegate?.avPlayer(self, currentTime: self.player.currentTime, durationTime: self.player.duration)
+            self.delegate2?.avPlayer(self, currentTime: self.player.currentTime, durationTime: self.player.duration)
+        })
         delegate?.avPlayer(self, playerStateIs: .play, currentItem: currentItem)
         delegate2?.avPlayer(self, playerStateIs: .play, currentItem: currentItem)
     }
     func stop() {
         player.stop()
         isPlaying = false
+        timer.invalidate()
         delegate?.avPlayer(self, playerStateIs: .stop, currentItem: currentItem)
         delegate2?.avPlayer(self, playerStateIs: .stop, currentItem: currentItem)
     }
     func pause(){
         player.pause()
+        timer.invalidate()
         isPlaying = false
         delegate?.avPlayer(self, playerStateIs: .pause, currentItem: currentItem)
         delegate2?.avPlayer(self, playerStateIs: .pause, currentItem: currentItem)
+    }
+    
+    func setCurrentTime(time: TimeInterval) {
+        player.pause()
+        player.currentTime = time
+        player.play()
     }
 }
 

@@ -9,18 +9,40 @@ import UIKit
 
 class PlayerViewController: UIViewController {
 
-    var presenter: PlayerViewPresenterProtocol?
-    var collectionView: UICollectionView?
-    let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+    public var presenter: PlayerViewPresenterProtocol?
+    private var collectionView: UICollectionView?
+    private let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private var indexOfCellBeforeDragging = 0
+    private let slider: UISlider = {
+        var slider = UISlider()
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        return slider
+    }()
+    private var currentTimeLabel: UILabel = {
+        var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "0:00"
+        return label
+    }()
+    private var durationTimeLabel: UILabel = {
+        var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "0:00"
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTap)))
+        view.addSubview(slider)
+        view.addSubview(currentTimeLabel)
+        view.addSubview(durationTimeLabel)
+        slider.addTarget(self, action: #selector(changeValue(sender:)), for: .valueChanged)
         createCollectionView()
         presenter?.setTrack()
         setupConstraints()
+        
     }
        
     override func viewDidAppear(_ animated: Bool) {
@@ -47,7 +69,9 @@ class PlayerViewController: UIViewController {
     @objc func onTap(){
            self.presenter?.back()
     }
-    
+    @objc func changeValue(sender: UISlider){
+        presenter?.refrashData(currentTime: sender.value)
+    }
     
     
     private func createCollectionView(){
@@ -71,10 +95,41 @@ class PlayerViewController: UIViewController {
         collectionView?.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
         collectionView?.heightAnchor.constraint(equalToConstant: 300).isActive = true
         collectionView?.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: view.bounds.height/10).isActive = true
+        
+        slider.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 5/6).isActive = true
+        slider.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        slider.centerYAnchor.constraint(equalTo: collectionView!.bottomAnchor, constant: 150).isActive = true
+        
+        currentTimeLabel.leftAnchor.constraint(equalTo: slider.leftAnchor).isActive = true
+        currentTimeLabel.topAnchor.constraint(equalTo: slider.bottomAnchor, constant: 10).isActive = true
+        durationTimeLabel.rightAnchor.constraint(equalTo: slider.rightAnchor).isActive = true
+        durationTimeLabel.topAnchor.constraint(equalTo: slider.bottomAnchor, constant: 10).isActive = true
     }
 }
 
 extension PlayerViewController: PlayerViewProtocol {
+    func refrashSlider(currentTime: TimeInterval, duration: TimeInterval) {
+        slider.minimumValue = 0
+        slider.maximumValue = Float(duration)
+        slider.setValue(Float(currentTime), animated: true)
+        
+        let minutes = Int(currentTime) / 60
+        let seconds = Int(currentTime) % 60
+        let dminutes = (Int(duration) / 60) - minutes
+        let dseconds = (Int(duration) % 60) - seconds
+        
+        if seconds < 10 {
+            currentTimeLabel.text = "\(minutes):0\(seconds)"
+        } else {
+            currentTimeLabel.text = "\(minutes):\(seconds)"
+        }
+        if dseconds < 10 {
+            durationTimeLabel.text = "\(dminutes):0\(dseconds)"
+        } else {
+            durationTimeLabel.text = "\(dminutes):\(dseconds)"
+        }
+    }
+    
     func setupPlayingTrackLineInCollecrion(index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
         layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
@@ -144,7 +199,6 @@ extension PlayerViewController: UICollectionViewDelegate {
             if let track = presenter?.data?.tracks[indexPath.row]{
                 presenter?.getTrackResponce(responce:track)
                 presenter?.data?.correntItem = indexPath.row
-                
             }
             if let bool = presenter?.data?.isPlaying {
                 if bool {

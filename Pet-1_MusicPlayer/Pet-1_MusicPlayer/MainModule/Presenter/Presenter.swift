@@ -201,4 +201,8 @@ extension Presenter: AVPlayerDelegate {
             compactPlayerView?.loadIndicator.stopAnimate()
         }
     }
+    
+    func avPlayer(_ AVPlayer: AVPlayer, currentTime: TimeInterval?, durationTime: TimeInterval?) {
+        
+    }
 }

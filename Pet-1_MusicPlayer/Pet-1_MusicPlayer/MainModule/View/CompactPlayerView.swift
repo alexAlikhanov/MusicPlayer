@@ -31,7 +31,7 @@ class CompactPlayerView: UIView {
     
     private let artistNameLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .black
+        label.textColor = .darkGray
         label.textAlignment = .center
         label.text = "artist name"
         label.font = UIFont.boldSystemFont(ofSize: 13)
@@ -43,7 +43,7 @@ class CompactPlayerView: UIView {
         label.textColor = .black
         label.textAlignment = .center
         label.text = "track name"
-        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -94,11 +94,11 @@ class CompactPlayerView: UIView {
         playPauseButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         artistNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        artistNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -15).isActive = true
+        artistNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 12).isActive = true
         artistNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 2/3).isActive = true
 
         trackNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        trackNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 15).isActive = true
+        trackNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -12).isActive = true
         trackNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 2/3).isActive = true
         
         loadIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
