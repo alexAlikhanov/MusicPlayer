@@ -21,7 +21,7 @@ protocol MainViewPresenterProtocol: class {
     func getImageResponce(responce: [Track]?)
     func getTrackResponce(responce: Track)
     func addTrackInFavorite(track: Track)
-    func removeTrackInFavorite(index: Int)
+    func removeTrackInFavorite(index: Int?, id: Int?)
     func showCompactPlayer()
     func hideCompsctPlayer()
     func setupCompactPlayer(trackIndex: Int)

@@ -41,7 +41,7 @@ class TrackTableViewCell: UITableViewCell {
         return button
     }()
     
-    private var state = false
+    private var state: Bool!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super .init(style: style , reuseIdentifier: "Cell")
@@ -105,13 +105,22 @@ class TrackTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         artworkImage.image = nil
         favoriteButton.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+        state = false
     }
-    func create(track: Track?, presenter: MainViewPresenterProtocol, index: Int) {
+    
+    func create(track: Track?, presenter: MainViewPresenterProtocol, index: Int, state: Bool) {
         guard let track = track else { return }
         if let artistName = track.artistName {self.artistName.text = artistName}
         if let trackName = track.trackName {self.trackName.text = trackName}
         self.tag = index
         self.presenter = presenter
+        self.state = state
+        
+        if self.state {
+            favoriteButton.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .normal)
+        } else {
+            favoriteButton.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+        }
     }
     func addImage(image: UIImage?){
         guard let image = image else { return }
@@ -119,13 +128,15 @@ class TrackTableViewCell: UITableViewCell {
     }
     
     @objc func favoriteButtonAction(sender: UIButton){
-        state = !state
-        if state {
+        if !state {
             sender.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .normal)
             guard let track = presenter.searchResponce?.results[self.tag] else { return }
             presenter.addTrackInFavorite(track: track)
+            state = true
         } else {
             sender.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+            guard let track = presenter.searchResponce?.results[self.tag] else { return }
+            presenter.removeTrackInFavorite(index: nil, id: track.trackId)
         }
     }
 

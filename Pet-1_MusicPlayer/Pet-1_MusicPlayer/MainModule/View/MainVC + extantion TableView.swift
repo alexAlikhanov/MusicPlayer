@@ -20,7 +20,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         switch tableView.tag {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? TrackTableViewCell else { return UITableViewCell() }
-            cell.create(track: presenter.favoriteTracks[indexPath.row], presenter: self.presenter, index: indexPath.row)
+            cell.create(track: presenter.favoriteTracks[indexPath.row], presenter: self.presenter, index: indexPath.row, state: false)
             if presenter.images.count > indexPath.row {
                 cell.addImage(image: presenter.images[indexPath.row])
                 cell.favoriteButton.isHidden = true
@@ -28,7 +28,14 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? TrackTableViewCell else { return UITableViewCell() }
-            cell.create(track: presenter.searchResponce?.results[indexPath.row], presenter: self.presenter, index: indexPath.row)
+            
+        let track = presenter.searchResponce?.results[indexPath.row]
+            if presenter.favoriteTracks.firstIndex(where: {$0.trackId == track?.trackId}) != nil {
+                cell.create(track: track , presenter: self.presenter, index: indexPath.row, state: true )
+            } else {
+                cell.create(track: track , presenter: self.presenter, index: indexPath.row, state: false )
+            }
+            
             if presenter.imagesSearch.count > indexPath.row {
                 cell.addImage(image: presenter.imagesSearch[indexPath.row])
             }
@@ -63,7 +70,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete, tableView.tag == 0 {
-            presenter.removeTrackInFavorite(index: indexPath.row)
+            presenter.removeTrackInFavorite(index: indexPath.row, id: nil)
             tableView.deleteRows(at: [indexPath], with: .left)
         }
     }

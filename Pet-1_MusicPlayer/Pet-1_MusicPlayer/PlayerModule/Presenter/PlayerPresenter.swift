@@ -22,8 +22,9 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
         self.networkService = networkService
         self.data = data
         self.player = player
-        self.player?.delegate2 = self
         currentTrackTime = 0
+        NotificationCenter.default.addObserver(self, selector: #selector(avPlayerTick(_:)), name: Notification.Name ("AVPlayerTick"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(avPlayerState(_:)), name: Notification.Name( "AVPlayerState"), object: nil)
     }
     
     func getTrackResponce(responce: Track) {
@@ -55,14 +56,13 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     func refrashData(currentTime: Float) {
         self.player?.setCurrentTime(time: TimeInterval(currentTime))
     }
-}
 
-extension PlayerPresenter: AVPlayerDelegate {
-    func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlayerState, currentItem: Int?) {
-        switch playerStateIs {
+    @objc func avPlayerState(_ notification: Notification) {
+        let dataSet = notification.object as! (playerStateIs: PlayerState, currentItem: Int?)
+        switch dataSet.playerStateIs {
         case .play:
-            data?.correntItem = currentItem
-            view?.setupPlayingTrackLineInCollecrion(index: currentItem!)
+            data?.correntItem = dataSet.currentItem
+            view?.setupPlayingTrackLineInCollecrion(index: dataSet.currentItem!)
             view?.action(flag: true)
         case .pause:
             view?.action(flag: false)
@@ -70,9 +70,10 @@ extension PlayerPresenter: AVPlayerDelegate {
             view?.action(flag: false)
         }
     }
-    func avPlayer(_ AVPlayer: AVPlayer, currentTime: TimeInterval?, durationTime: TimeInterval?) {
-        guard let time = currentTime, let duration = durationTime else { return }
-        view?.refrashSlider(currentTime: time, duration: duration)
+    @objc func avPlayerTick(_ notification: Notification) {
+        let data = notification.object as! (currentTime: TimeInterval, durationTime: TimeInterval )
+
+        view?.refrashSlider(currentTime: data.currentTime, duration: data.durationTime)
     }
  
 }
