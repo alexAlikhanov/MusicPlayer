@@ -7,9 +7,10 @@
 
 import Foundation
 
-protocol MainViewProtocol: class {
+protocol MainViewProtocol: AnyObject {
     func sucsess()
     func failure(error: Error)
     func changeIndicator(index: Int, state: Bool )
     func setupPlayingTrackLineInTable(index: Int)
+    func update()
 }

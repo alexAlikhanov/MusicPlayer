@@ -47,13 +47,17 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView.tag {
         case 0:
+            presenter.selectedArray = .favorite
             if !presenter.isCompactPlayerShow!{presenter.showCompactPlayer()}
-            presenter.setupCompactPlayer(trackIndex: indexPath.row)
+            presenter.setupCompactPlayer(forArray: .favorite, trackIndex: indexPath.row)
             presenter.currentIndex = indexPath.row
             
+            
         case 1:
-            guard let track = presenter.searchResponce?.results[indexPath.row] else { return }
-            //presenter.addTrackInFavorite(track: track)
+            presenter.selectedArray = .search
+            if !presenter.isCompactPlayerShow!{presenter.showCompactPlayer()}
+            presenter.setupCompactPlayer(forArray: .search, trackIndex: indexPath.row)
+            presenter.currentIndex = indexPath.row
         default: break
         }
     }

@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol CompactPlayerViewProtocol: class {
+protocol CompactPlayerViewProtocol: AnyObject {
     var isShow: Bool { get }
     var loadIndicator: LoadIndicator { get set }
     func showPlayerView()
     func hidePlayerView()
-    func setupValues(index: Int)
+    func setupValues(forArray: MusicArray, index: Int, id: Int)
     func changeButtonState(state: PlayerState )
 }

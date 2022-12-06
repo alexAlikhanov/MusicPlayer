@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol MainViewPresenterProtocol: class {
+protocol MainViewPresenterProtocol: AnyObject {
     init(view: MainViewProtocol, compactPlayer: CompactPlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, player: AVPlayerProtocol, userDefaultsManager: UserDefaultsManagerProtocol)
     var searchResponce: SearchResponse? { get set }
     var favoriteTracks: [Track] { get set }
@@ -15,6 +15,7 @@ protocol MainViewPresenterProtocol: class {
     var images: [UIImage?] { get set }
     var isCompactPlayerShow: Bool? { get }
     var currentIndex: Int! { get set }
+    var selectedArray: MusicArray { get set }
     func mainViewLoaded()
     func getSearchResponce(request: String)
     func getSearchImageResponce(responce: [Track]?)
@@ -24,8 +25,8 @@ protocol MainViewPresenterProtocol: class {
     func removeTrackInFavorite(index: Int?, id: Int?)
     func showCompactPlayer()
     func hideCompsctPlayer()
-    func setupCompactPlayer(trackIndex: Int)
-    func tapOnThePlayer()
+    func setupCompactPlayer(forArray: MusicArray, trackIndex: Int)
+    func tapOnThePlayer(forArray: MusicArray)
     func dismissPlayer()
     func changePlayerState(state: PlayerState)
 }

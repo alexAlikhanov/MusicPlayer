@@ -14,11 +14,11 @@ enum PlayerState{
     case stop
 }
 
-protocol AVPlayerDataSouce: class {
+protocol AVPlayerDataSouce: AnyObject {
     func avPlayer(_ AVPlayer: AVPlayer, sourse: Data) -> Data
 }
 
-protocol AVPlayerDelegate: class {
+protocol AVPlayerDelegate: AnyObject {
     func avPlayer(_ AVPlayer: AVPlayer, playerStateIs: PlayerState, currentItem : Int?)
     func avPlayer(_ AVPlayer: AVPlayer, currentTime : TimeInterval?, durationTime: TimeInterval?)
 }
@@ -50,7 +50,7 @@ class AVPlayer: NSObject, AVPlayerProtocol {
         guard let data = data else { return }
         do {
             self.player = try AVAudioPlayer(data: data, fileTypeHint: "m4a")
-
+            self.player.delegate = self
             self.trackDuration = player.duration
             self.play()
         }

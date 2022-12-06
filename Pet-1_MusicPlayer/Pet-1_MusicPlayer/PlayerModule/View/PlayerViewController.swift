@@ -18,6 +18,7 @@ class PlayerViewController: UIViewController {
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
+    
     private var currentTimeLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -47,23 +48,24 @@ class PlayerViewController: UIViewController {
        
     override func viewDidAppear(_ animated: Bool) {
            super.viewDidAppear(animated)
-   
-    }
-       
-    override func viewDidLayoutSubviews() {
-           super.viewDidLayoutSubviews()
-           view.layoutIfNeeded()
-            configureCollectionViewLayoutItemSize()
             if let index = presenter?.data?.correntItem {
             let indexPath = IndexPath(row: index, section: 0)
-            layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-                
             guard let cell = layout.collectionView?.cellForItem(at: indexPath) as? CollectionViewCell else {return}
             if let bool = presenter?.data?.isPlaying {
                 if bool {
                     cell.scaleUp()
                 }
             }
+        }
+    }
+       
+    override func viewDidLayoutSubviews() {
+           super.viewDidLayoutSubviews()
+           view.layoutIfNeeded()
+            configureCollectionViewLayoutItemSize()
+        if let index = presenter?.data?.correntItem {
+            let indexPath = IndexPath(row: index, section: 0)
+            layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
         }
     }
     @objc func onTap(){
@@ -181,29 +183,19 @@ extension PlayerViewController: UICollectionViewDelegate {
             }, completion: nil)
             guard let bcell = collectionView?.cellForItem(at: IndexPath(row: indexOfCellBeforeDragging, section: 0)) as? CollectionViewCell else {return}
             bcell.scaleDown()
-            guard let cell = collectionView?.cellForItem(at: IndexPath(row: snapToIndex, section: 0)) as? CollectionViewCell else {return}
             if let track = presenter?.data?.tracks[snapToIndex]{
                 presenter?.getTrackResponce(responce:track)
                 presenter?.data?.correntItem = snapToIndex
             }
-            if let bool = presenter?.data?.isPlaying {
-                if bool {
-                    cell.scaleUp()
-                }
-            }
+
         } else {
             let indexPath = IndexPath(row: indexOfMajorCell, section: 0)
             layout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             let beckIndexPath = IndexPath(row: indexOfCellBeforeDragging, section: 0)
-            guard let cell = collectionView?.cellForItem(at:indexPath) as? CollectionViewCell else {return}
+            
             if let track = presenter?.data?.tracks[indexPath.row]{
                 presenter?.getTrackResponce(responce:track)
                 presenter?.data?.correntItem = indexPath.row
-            }
-            if let bool = presenter?.data?.isPlaying {
-                if bool {
-                    cell.scaleUp()
-                }
             }
             guard let bcell = collectionView?.cellForItem(at:beckIndexPath) as? CollectionViewCell else {return}
             bcell.scaleDown()

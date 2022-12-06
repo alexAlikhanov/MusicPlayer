@@ -80,6 +80,10 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: MainViewProtocol{
+    func update() {
+        favoriteTableView.reloadData()
+    }
+    
     func setupPlayingTrackLineInTable(index: Int) {
         let indePath = IndexPath(row: index, section: 0)
         self.favoriteTableView.selectRow(at: indePath, animated: true, scrollPosition: .none)
@@ -121,8 +125,16 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        presenter.getImageResponce(responce: presenter.favoriteTracks)
+       
+    }
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         presenter.searchResponce = nil
         searchTableView.reloadData()
-        presenter.getImageResponce(responce: presenter.favoriteTracks)
+        if presenter.selectedArray == .search {
+            presenter.hideCompsctPlayer()
+        }
+        return true
     }
 }

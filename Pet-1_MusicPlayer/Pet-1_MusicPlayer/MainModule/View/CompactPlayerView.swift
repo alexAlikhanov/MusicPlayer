@@ -47,9 +47,17 @@ class CompactPlayerView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    public var favoriteButton: UIButton = {
+        var button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = nil
+        button.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+        button.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .highlighted)
+        return button
+    }()
     
     public var loadIndicator = LoadIndicator.shared
-    
+    private var state: Bool!
     override init(frame: CGRect) {
         super .init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -67,9 +75,11 @@ class CompactPlayerView: UIView {
         self.addSubview(closeButton)
         self.addSubview(playPauseButton)
         self.addSubview(loadIndicator)
+        self.addSubview(favoriteButton)
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap(gest:))))
         self.closeButton.addTarget(self, action: #selector(tapCencelButton(butt:)), for: .touchUpInside)
         self.playPauseButton.addTarget(self, action: #selector(playPauseButtonAction(sender:)), for: .touchUpInside)
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonAction(sender:)), for: .touchUpInside)
         
         UIApplication.shared.keyWindow?.addSubview(self)
         if let  layoutGuide  = UIApplication.shared.keyWindow?.layoutMarginsGuide {
@@ -95,16 +105,20 @@ class CompactPlayerView: UIView {
         
         artistNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         artistNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 12).isActive = true
-        artistNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 2/3).isActive = true
+        artistNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 3/5).isActive = true
 
         trackNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         trackNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -12).isActive = true
-        trackNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 2/3).isActive = true
+        trackNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 3/5).isActive = true
         
         loadIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        loadIndicator.leftAnchor.constraint(equalTo: closeButton.rightAnchor, constant: 10).isActive = true
+        loadIndicator.rightAnchor.constraint(equalTo: playPauseButton.leftAnchor, constant: -10).isActive = true
         loadIndicator.heightAnchor.constraint(equalToConstant: 20).isActive = true
         loadIndicator.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        favoriteButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        favoriteButton.leftAnchor.constraint(equalTo: closeButton.rightAnchor, constant: 10).isActive = true
+        favoriteButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        favoriteButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
 
         
         UIView.animate(withDuration: 0.5, animations: {
@@ -119,13 +133,37 @@ class CompactPlayerView: UIView {
             }
         })
     }
+    @objc func favoriteButtonAction(sender: UIButton){
+        
+        switch presenter.selectedArray{
+        case .search:
+            if !state {
+                sender.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .normal)
+                guard let track = presenter.searchResponce?.results[presenter.currentIndex] else { return }
+                presenter.addTrackInFavorite(track: track)
+                state = true
+            } else {
+                sender.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+                guard let track = presenter.searchResponce?.results[presenter.currentIndex] else { return }
+                presenter.removeTrackInFavorite(index: nil, id: track.trackId)
+                state = false
+            }
+        case.favorite:
+            if !state {
+                
+            }else {
+                let track = presenter.favoriteTracks[presenter.currentIndex]
+                presenter.removeTrackInFavorite(index: nil, id: track.trackId)
+            }
+        }
+    }
     
     @objc func tapCencelButton(butt: UIButton) {
         presenter.hideCompsctPlayer()
         presenter.dismissPlayer()
     }
     @objc func tap(gest: UITapGestureRecognizer) {
-        presenter.tapOnThePlayer()
+        presenter.tapOnThePlayer(forArray: presenter.selectedArray)
     }
     @objc func playPauseButtonAction(sender: UIButton) {
         if !buttonState {
@@ -163,10 +201,24 @@ extension CompactPlayerView : CompactPlayerViewProtocol {
         })
     }
     
-    func setupValues(index: Int) {
-        trackNameLabel.text = presenter.favoriteTracks[index].trackName
-        artistNameLabel.text = presenter.favoriteTracks[index].artistName
-        
+    func setupValues(forArray: MusicArray, index: Int, id: Int) {
+        switch forArray {
+        case .favorite:
+            trackNameLabel.text = presenter.favoriteTracks[index].trackName
+            artistNameLabel.text = presenter.favoriteTracks[index].artistName
+        case .search:
+            guard let track = presenter.searchResponce?.results[index] else { return }
+            trackNameLabel.text = track.trackName
+            artistNameLabel.text = track.artistName
+        }
+        print("id \(id) track id")
+        if presenter.favoriteTracks.firstIndex(where: {$0.trackId == id }) != nil {
+            favoriteButton.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .normal)
+            state = true
+        } else {
+            favoriteButton.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+            state = false
+        }
     }
     
     var isShow: Bool {
