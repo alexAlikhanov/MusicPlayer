@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PlayerViewPresenterProtocol: class{
+protocol PlayerViewPresenterProtocol: AnyObject{
     init (view: PlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, data: MusicData?, player: AVPlayerProtocol)
     var data: MusicData? { get set }
     var player: AVPlayerProtocol? { get set }

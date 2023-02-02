@@ -11,6 +11,7 @@ protocol MainViewPresenterProtocol: AnyObject {
     init(view: MainViewProtocol, compactPlayer: CompactPlayerViewProtocol, router: RouterProtocol, networkService: NetworkServiceProtocol, player: AVPlayerProtocol, userDefaultsManager: UserDefaultsManagerProtocol)
     var searchResponce: SearchResponse? { get set }
     var favoriteTracks: [Track] { get set }
+    var currentTracks: [Track] { get set }
     var imagesSearch: [UIImage?] { get set }
     var images: [UIImage?] { get set }
     var isCompactPlayerShow: Bool? { get }

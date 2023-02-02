@@ -80,9 +80,9 @@ class CompactPlayerView: UIView {
         self.closeButton.addTarget(self, action: #selector(tapCencelButton(butt:)), for: .touchUpInside)
         self.playPauseButton.addTarget(self, action: #selector(playPauseButtonAction(sender:)), for: .touchUpInside)
         favoriteButton.addTarget(self, action: #selector(favoriteButtonAction(sender:)), for: .touchUpInside)
-        
-        UIApplication.shared.keyWindow?.addSubview(self)
-        if let  layoutGuide  = UIApplication.shared.keyWindow?.layoutMarginsGuide {
+        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.addSubview(self)
+
+        if let  layoutGuide  = UIApplication.shared.windows.filter({$0.isKeyWindow}).first?.layoutMarginsGuide{
             yConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: layoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
             
             NSLayoutConstraint.activate([
@@ -135,27 +135,17 @@ class CompactPlayerView: UIView {
     }
     @objc func favoriteButtonAction(sender: UIButton){
         
-        switch presenter.selectedArray{
-        case .search:
-            if !state {
-                sender.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .normal)
-                guard let track = presenter.searchResponce?.results[presenter.currentIndex] else { return }
-                presenter.addTrackInFavorite(track: track)
-                state = true
-            } else {
-                sender.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
-                guard let track = presenter.searchResponce?.results[presenter.currentIndex] else { return }
-                presenter.removeTrackInFavorite(index: nil, id: track.trackId)
+        if !state {
+            sender.setImage(UIImage(named:"favourite")?.withTintColor(.red), for: .normal)
+            let track = presenter.currentTracks[presenter.currentIndex]
+            presenter.addTrackInFavorite(track: track)
+            state = true
+        } else {
+            sender.setImage(UIImage(named:"favourite (1)")?.withTintColor(.red), for: .normal)
+            let track = presenter.currentTracks[presenter.currentIndex]
+            presenter.removeTrackInFavorite(index: nil, id: track.trackId)
                 state = false
-            }
-        case.favorite:
-            if !state {
-                
-            }else {
-                let track = presenter.favoriteTracks[presenter.currentIndex]
-                presenter.removeTrackInFavorite(index: nil, id: track.trackId)
-            }
-        }
+        } 
     }
     
     @objc func tapCencelButton(butt: UIButton) {
@@ -194,7 +184,7 @@ extension CompactPlayerView : CompactPlayerViewProtocol {
     func hidePlayerView() {
         UIView.animate(withDuration: 0.5, animations: {
             self.yConstraint.constant = 100
-            UIApplication.shared.keyWindow?.layoutIfNeeded()
+            UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.layoutIfNeeded()
         }, completion: { [weak self] bool in
             self?.removeFromSuperview()
             self?.isShowed = false
@@ -204,12 +194,11 @@ extension CompactPlayerView : CompactPlayerViewProtocol {
     func setupValues(forArray: MusicArray, index: Int, id: Int) {
         switch forArray {
         case .favorite:
-            trackNameLabel.text = presenter.favoriteTracks[index].trackName
-            artistNameLabel.text = presenter.favoriteTracks[index].artistName
+            trackNameLabel.text = presenter.currentTracks[index].trackName
+            artistNameLabel.text = presenter.currentTracks[index].artistName
         case .search:
-            guard let track = presenter.searchResponce?.results[index] else { return }
-            trackNameLabel.text = track.trackName
-            artistNameLabel.text = track.artistName
+            trackNameLabel.text = presenter.currentTracks[index].trackName
+            artistNameLabel.text = presenter.currentTracks[index].artistName
         }
         print("id \(id) track id")
         if presenter.favoriteTracks.firstIndex(where: {$0.trackId == id }) != nil {

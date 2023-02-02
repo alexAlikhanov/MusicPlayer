@@ -125,16 +125,13 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
+        presenter.searchResponce = nil
         presenter.getImageResponce(responce: presenter.favoriteTracks)
        
     }
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         presenter.searchResponce = nil
         searchTableView.reloadData()
-        if presenter.selectedArray == .search {
-            presenter.hideCompsctPlayer()
-        }
         return true
     }
 }

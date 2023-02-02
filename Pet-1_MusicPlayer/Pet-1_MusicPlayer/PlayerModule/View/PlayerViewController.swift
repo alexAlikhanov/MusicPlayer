@@ -31,7 +31,14 @@ class PlayerViewController: UIViewController {
         label.text = "0:00"
         return label
     }()
-    
+    private var albumLabel: UILabel = {
+        var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
@@ -39,11 +46,12 @@ class PlayerViewController: UIViewController {
         view.addSubview(slider)
         view.addSubview(currentTimeLabel)
         view.addSubview(durationTimeLabel)
+        view.addSubview(albumLabel)
         slider.addTarget(self, action: #selector(changeValue(sender:)), for: .valueChanged)
         createCollectionView()
         presenter?.setTrack()
         setupConstraints()
-        
+        albumLabel.text = "Сейчас играет \n\( presenter?.data?.currentAlbom ?? "")"
     }
        
     override func viewDidAppear(_ animated: Bool) {
@@ -102,6 +110,8 @@ class PlayerViewController: UIViewController {
         slider.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         slider.centerYAnchor.constraint(equalTo: collectionView!.bottomAnchor, constant: 150).isActive = true
         
+        albumLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        albumLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         currentTimeLabel.leftAnchor.constraint(equalTo: slider.leftAnchor).isActive = true
         currentTimeLabel.topAnchor.constraint(equalTo: slider.bottomAnchor, constant: 10).isActive = true
         durationTimeLabel.rightAnchor.constraint(equalTo: slider.rightAnchor).isActive = true

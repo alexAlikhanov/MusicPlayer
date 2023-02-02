@@ -13,4 +13,5 @@ struct MusicData{
     var images: [UIImage?]
     var correntItem: Int?
     let isPlaying: Bool
+    let currentAlbom: String
 }

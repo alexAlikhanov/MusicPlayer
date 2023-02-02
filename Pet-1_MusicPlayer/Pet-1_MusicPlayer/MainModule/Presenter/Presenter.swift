@@ -22,8 +22,10 @@ class Presenter: MainViewPresenterProtocol {
     var userDefaults: UserDefaultsManagerProtocol!
     var searchResponce: SearchResponse?
     var favoriteTracks: [Track] = []
+    var currentTracks: [Track] = []
     var images: [UIImage?] = []
     var imagesSearch: [UIImage?] = []
+    var currentImages: [UIImage?] = []
     var isCompactPlayerShow: Bool? {
         get {
             return compactPlayerView?.isShow
@@ -108,7 +110,6 @@ class Presenter: MainViewPresenterProtocol {
     }
     
     func getTrackResponce(responce: Track) {
-       // self.player?.pause()
         DispatchQueue.global().sync {
             networkservice?.getTrackBy(urlString: responce.previewUrl, complition: {[weak self] (result) in
                 guard let self = self else { return }
@@ -144,26 +145,24 @@ class Presenter: MainViewPresenterProtocol {
     func setupCompactPlayer(forArray: MusicArray, trackIndex: Int) {
         switch forArray {
         case .favorite:
-            compactPlayerView?.setupValues(forArray: forArray, index: trackIndex, id: favoriteTracks[trackIndex].trackId!)
-            compactPlayerView?.loadIndicator.startAnimate()
-            self.getTrackResponce(responce: favoriteTracks[trackIndex])
+            self.currentTracks = favoriteTracks
+            self.currentImages = images
         case .search:
-            guard let traks = self.searchResponce?.results else {return}
-            compactPlayerView?.setupValues(forArray: forArray, index: trackIndex, id: traks[trackIndex].trackId!)
-            compactPlayerView?.loadIndicator.startAnimate()
-            self.getTrackResponce(responce: traks[trackIndex])
+            self.currentTracks = self.searchResponce?.results ?? []
+            self.currentImages = imagesSearch
         }
-        
+        compactPlayerView?.setupValues(forArray: forArray, index: trackIndex, id: currentTracks[trackIndex].trackId!)
+        compactPlayerView?.loadIndicator.startAnimate()
+        self.getTrackResponce(responce: currentTracks[trackIndex])
     }
     
     func tapOnThePlayer(forArray: MusicArray) {
         switch forArray {
         case .favorite:
-            let data = MusicData(tracks: favoriteTracks, images: images, correntItem: currentIndex, isPlaying: player?.isPlaying ?? false)
+            let data = MusicData(tracks: currentTracks, images: currentImages, correntItem: currentIndex, isPlaying: player?.isPlaying ?? false, currentAlbom: "Моя музыка")
             router?.presentMusicPlauer(data: data)
         case .search:
-            guard let traks = self.searchResponce?.results else { return }
-            let data = MusicData(tracks: traks, images: imagesSearch, correntItem: currentIndex, isPlaying: player?.isPlaying ?? false)
+            let data = MusicData(tracks: currentTracks, images: currentImages, correntItem: currentIndex, isPlaying: player?.isPlaying ?? false, currentAlbom: "по результатам поиска")
             router?.presentMusicPlauer(data: data)
         }
        
@@ -186,21 +185,7 @@ class Presenter: MainViewPresenterProtocol {
             self.favoriteTracks.remove(at: ind)
             self.images.remove(at: ind)
         } else { return }
-        
-        if selectedArray == .favorite, player?.isPlaying == true {
-            if favoriteTracks.count == 0 {
-                self.player?.pause()
-                self.hideCompsctPlayer()
-            } else if favoriteTracks.count > 0, currentIndex == ind, currentIndex <= favoriteTracks.count - 1 {
-                if ((compactPlayerView?.isShow) != nil){
-                    self.setupCompactPlayer(forArray: .favorite, trackIndex: currentIndex)}
-            } else if currentIndex > favoriteTracks.count - 1 {
-                currentIndex = favoriteTracks.count - 1
-                player?.currentItem = currentIndex
-                if ((compactPlayerView?.isShow) != nil){
-                    self.setupCompactPlayer(forArray: .favorite, trackIndex: currentIndex)}
-            }
-        }
+
         userDefaults.save(self.favoriteTracks, forKey: "myTracks")
         
     }
@@ -219,44 +204,23 @@ class Presenter: MainViewPresenterProtocol {
         let data = notification.object as! (playerStateIs: PlayerState, currentItem: Int?)
         print(data.playerStateIs)
         compactPlayerView?.changeButtonState(state: data.playerStateIs)
-        
-        switch selectedArray {
-        case .favorite:
+       
             if data.playerStateIs == .stop {
-                if currentIndex < favoriteTracks.count - 1 {
+                if currentIndex < currentTracks.count - 1 {
                     currentIndex = currentIndex + 1
                     setupCompactPlayer(forArray: .favorite, trackIndex: currentIndex)
                     view?.setupPlayingTrackLineInTable(index: currentIndex)
                 }
-                if currentIndex == favoriteTracks.count - 1 {
+                if currentIndex == currentTracks.count - 1 {
                     player?.pause()
                 }
             }
             if data.playerStateIs == .play {
-                compactPlayerView?.setupValues(forArray: .favorite, index: data.currentItem ?? 0, id: favoriteTracks[data.currentItem!].trackId!)
+                compactPlayerView?.setupValues(forArray: .favorite, index: data.currentItem ?? 0, id: currentTracks[data.currentItem!].trackId!)
                 currentIndex = data.currentItem
                 view?.setupPlayingTrackLineInTable(index: currentIndex)
                 compactPlayerView?.loadIndicator.stopAnimate()
-            }
-        case .search:
-            guard let traks = searchResponce?.results else { return }
-            if data.playerStateIs == .stop {
-                if currentIndex < traks.count - 1 {
-                    currentIndex = currentIndex + 1
-                    setupCompactPlayer(forArray: .search, trackIndex: currentIndex)
-                }
-                if currentIndex == traks.count - 1 {
-                    player?.pause()
-                }
-            }
-            if data.playerStateIs == .play {
-                compactPlayerView?.setupValues(forArray: .search, index: data.currentItem ?? 0, id: traks[data.currentItem!].trackId!)
-                currentIndex = data.currentItem
-                compactPlayerView?.loadIndicator.stopAnimate()
-            }
-        }
-        
-        
+            }      
     }
     
     @objc func avPlayerTick(_ notification: Notification) {

@@ -52,7 +52,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             presenter.setupCompactPlayer(forArray: .favorite, trackIndex: indexPath.row)
             presenter.currentIndex = indexPath.row
             
-            
+
         case 1:
             presenter.selectedArray = .search
             if !presenter.isCompactPlayerShow!{presenter.showCompactPlayer()}
